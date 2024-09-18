@@ -1,4 +1,4 @@
-Author: Mauricio I. Reyes Villanueva
+Author: Mauricio I. Reyes Villanueva <br>
 Due: 09/18/2024
 
 Note: I sometimes switched from second to third person throughout this assignment, so I'd like to apologize about that from a readers perspective before hand.
