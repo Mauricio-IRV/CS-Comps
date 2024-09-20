@@ -298,6 +298,126 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
     > Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
 
+1. Use the password found in the previous level to log into bandit11
+
+   > ssh -p 2220 bandit11@bandit.labs.overthewire.org
+
+2. List the files in the current directory
+
+   > ls
+
+3. View the contents of data.txt which shows us the "hexdump'
+
+   > cat data.txt
+
+4. Let's make a tmp directory for us to work in.
+
+   > mktemp -d
+   > # directory response: /tmp/tmp.dYr8ymq3gg
+
+5. Next we need to make a copy of data.txt to work with in so we do
+
+   > cp data.txt /tmp/tmp.dYr8ymq3gg/
+
+5. Next I moved over to the directory where the data was stored to view in the space
+
+   > cd /tmp/tmp.dYr8ymq3gg
+
+6. From here we can now use "xxd" to revert our compressed hexdump into the original compressed file as such:
+
+   > xxd -r data.txt compressed.txt
+
+7. If we print compressed.txt we'll notice that it's still illegible, but we know is that it was compressed based on the instructions. We don't know in what format. Thankfully we have our handy little tool called "file"! From here we can use file to get some details on the sort of compression the file contains. So let's do it:
+
+   > file compressed.txt
+   > # Output: compressed.txt: gzip compressed data, was "data2.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 574
+
+8. Knowing this we can decompress the file, but let's first fix the file ending which we now know is .gz since its compressed with gzip
+
+   > mv compressed.txt compressed.gz
+
+9. Finally we can actually start the decompressing process using gzip, as follows:
+
+   > gzip -d compressed.gz
+
+10. Sadly it doesn't end here though, since the instructions stated that the file was compressed "multiple" times. So let's rinse & repeat.
+
+   > file compressed
+   > # Output: compressed: bzip2 compressed data, block size = 900k
+
+11. Compressed using bzip2, so let's rename the file so that it has the proper extension and decompress using bzip2.
+
+   > mv compressed compressed.bz2
+   > bzip2 -d compressed.bz2
+
+12. If we cat the compressed file, we'll notice that it's still not fully decompressed. So let's continue
+
+   > file compressed
+   > # Output: compressed: gzip compressed data, was "data4.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 20480
+
+   > mv compressed compressed.gz
+   > gzip -d compressed.gz
+
+13. If we do "file compressed" one more time to see where we're at, we'll see that we now have a POSIX tar archive. So we need to use "tar" to "extract (-x)" a "file (-f)." We'll first give the file the proper extension, and then extract the compressed file, as such:
+
+   > mv compressed compressed.tar
+   > tar -xf compressed.tar
+
+14. Interestingly enough this now gives us a data5.bin, so let's explore to see what sort of file that is.
+
+   > file data5.bin
+   > # Output: data5.bin: POSIX tar archive (GNU)
+
+15. Welp. We have another tar archive. Let's continue.
+
+   > tar -xf data5.bin
+   > # Output: compressed.tar  data5.bin  data6.bin  data.txt
+
+16. Wow. Now we have a data6.bin, exciting (not really lmao please help). Let's continue:
+
+   > file data6.bin
+   > # Output: data6.bin: bzip2 compressed data, block size = 900k
+
+   > mv data6.bin data6.bz2
+   > bzip2 -d data6.bz2
+
+   > ls
+   > file data6
+   > # Output: data6: POSIX tar archive (GNU)
+
+17. Help.
+
+   > mv data6 data6.tar
+   > tar -xf data6.tar
+   > # Output: compressed.tar  data5.bin  data6.tar  data8.bin  data.txt
+
+   > file data8.bin
+   > # Output: data8.bin: gzip compressed data, was "data9.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 49
+
+18. Who am I?
+
+   > mv data8.bin data8.gz
+   > gzip -d data8.gz
+   > file data8
+   > # Output: data8: ASCII text
+
+19. WOW! It's ASCII text! We've made it! At some point I stopped explaining what I was doing and why, alongside my thought process as it was getting too repetitive, but here we are! We can now use cat to see our password inside!
+
+   > cat data8
+
+19. Clean up the temp directory
+
+   > cd ~
+   > rm -rf /tmp/tmp.dYr8ymq3gg
+
+20. Logout of the remote server.
+
+   > exit
+
+## Bandit 13 -> 14
+   
+   > FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+
 > TBC...
 
 ### EOF
