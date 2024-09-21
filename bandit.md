@@ -5,7 +5,7 @@ Note: I sometimes switched from second to third person throughout this assignmen
 
 ## Bandit Level 0 -> 1
 
-> Password: bandit0
+ > Password: bandit0
 
 1. Log into the remote server using SSH
 
@@ -24,7 +24,7 @@ Note: I sometimes switched from second to third person throughout this assignmen
 
 ## Bandit Level 1 -> 2
 
-> Password: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+ > Password: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
 
 1. Use the password found in the README from level one to log into bandit1
 
@@ -62,7 +62,7 @@ Note: I sometimes switched from second to third person throughout this assignmen
 
 ## Bandit Level 3 -> 4
 
-> Password: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+ > Password: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
 
 1. Use the password found in the previous level to log into bandit3
 
@@ -89,7 +89,7 @@ Note: I sometimes switched from second to third person throughout this assignmen
 
 ## Bandit Level 4 -> 5
 
-> Password: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+ > Password: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
 
 1. Use the password found in the previous level to log into bandit4
 
@@ -116,7 +116,7 @@ Note: I sometimes switched from second to third person throughout this assignmen
 
 ## Bandit Level 5 -> 6
 
-> Password: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+ > Password: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
 
 1. Use the password found in the "-" file from level two to log into bandit5
 
@@ -157,7 +157,7 @@ I don't fully understand why "find inhere -type f -size 1033c ! -executable" thi
 
 ## Bandit Level 6 -> 7
 
-> Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+ > Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
 
 1. Use the password found in the previous level to log into bandit6
 
@@ -188,7 +188,7 @@ I don't fully understand why "find inhere -type f -size 1033c ! -executable" thi
 
 ## Bandit Level 7 -> 8
 
-> Password: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+ > Password: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
 
 1. Use the password found in the previous level to log into bandit7
 
@@ -207,7 +207,7 @@ I don't fully understand why "find inhere -type f -size 1033c ! -executable" thi
 
 ## Bandit Level 8 -> 9
 
-> Password: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+ > Password: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
 
 1. Use the password found in the previous level to log into bandit8
 
@@ -230,7 +230,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 ## Bandit Level 9 -> 10
 
-> Password: 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+ > Password: 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
 
 1. Use the password found in the previous level to log into bandit9
 
@@ -254,7 +254,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 ## Bandit Level 10 -> 11
 
-> Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+ > Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
 
 1. Use the password found in the previous level to log into bandit10
 
@@ -277,7 +277,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 ## Bandit 11 -> 12
 
-> Password: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+ > Password: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
 
 1. Use the password found in the previous level to log into bandit11
 
@@ -296,7 +296,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 ## Bandit 12 -> 13
 
-> Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+ > Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
 
 1. Use the password found in the previous level to log into bandit12
 
@@ -465,7 +465,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 ## Bandit 14 -> 15
 
-> Password: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+ > Password: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
 
 1.  For this level I did have to look things up since I was a bit confused on what it meant by "submitting the password of the current level to port 30000 on localhost" and so reviewing the walkthrough helped me out, but even then, I'm not entirely sure if I understood it correctly, but what I think I've come to understand is that when doing "nc localhost 30000" I created a connection from my localhost over to the servers port which I then sent the bandit14 password, and when the server saw the correct password, they returned the password for bandit15. Which is done as follows:
 
