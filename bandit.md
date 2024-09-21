@@ -314,7 +314,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
    > mktemp -d
    >
-   > # directory response: /tmp/tmp.dYr8ymq3gg
+   > // directory response: /tmp/tmp.dYr8ymq3gg
 
 5. Next we need to make a copy of data.txt to work with in so we do
 
@@ -332,7 +332,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
    > file compressed.txt
    >
-   > # Output: compressed.txt: gzip compressed data, was "data2.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 574
+   > // Output: compressed.txt: gzip compressed data, was "data2.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 574
 
 9. Knowing this we can decompress the file, but let's first fix the file ending which we now know is .gz since its compressed with gzip
 
@@ -346,7 +346,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 > file compressed
 >
-> # Output: compressed: bzip2 compressed data, block size = 900k
+> // Output: compressed: bzip2 compressed data, block size = 900k
 
 11. Compressed using bzip2, so let's rename the file so that it has the proper extension and decompress using bzip2.
 
@@ -357,7 +357,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 > file compressed
 >
-> # Output: compressed: gzip compressed data, was "data4.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 20480
+> // Output: compressed: gzip compressed data, was "data4.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 20480
 
 > mv compressed compressed.gz
 > gzip -d compressed.gz
@@ -371,19 +371,19 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 > file data5.bin
 >
-> # Output: data5.bin: POSIX tar archive (GNU)
+> // Output: data5.bin: POSIX tar archive (GNU)
 
 15. Welp. We have another tar archive. Let's continue.
 
 > tar -xf data5.bin
 >
-> # Output: compressed.tar data5.bin data6.bin data.txt
+> // Output: compressed.tar data5.bin data6.bin data.txt
 
 16. Wow. Now we have a data6.bin, exciting (not really lmao please help). Let's continue:
 
 > file data6.bin
 >
-> # Output: data6.bin: bzip2 compressed data, block size = 900k
+> // Output: data6.bin: bzip2 compressed data, block size = 900k
 
 > mv data6.bin data6.bz2
 > bzip2 -d data6.bz2
@@ -391,18 +391,18 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 > ls
 > file data6
 >
-> # Output: data6: POSIX tar archive (GNU)
+> // Output: data6: POSIX tar archive (GNU)
 
 17. Help.
 
 > mv data6 data6.tar
 > tar -xf data6.tar
 >
-> # Output: compressed.tar data5.bin data6.tar data8.bin data.txt
+> // Output: compressed.tar data5.bin data6.tar data8.bin data.txt
 
 > file data8.bin
 >
-> # Output: data8.bin: gzip compressed data, was "data9.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 49
+> // Output: data8.bin: gzip compressed data, was "data9.bin", last modified: Thu Sep 19 07:08:15 2024, max compression, from Unix, original size modulo 2^32 49
 
 18. Who am I?
 
@@ -410,7 +410,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 > gzip -d data8.gz
 > file data8
 >
-> # Output: data8: ASCII text
+> // Output: data8: ASCII text
 
 19. WOW! It's ASCII text! We've made it! At some point I stopped explaining what I was doing and why, alongside my thought process as it was getting too repetitive, but here we are! We can now use cat to see our password inside!
 
@@ -441,7 +441,7 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
    > scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private .
    >
-   > # STDIN Password: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+   > // STDIN Password: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
 
 4. We should have now been authenticated so let's try logging in to bandit14!
 
@@ -471,11 +471,11 @@ So we'll need to sort the file, and then pipe the stdout into uniq. As such:
 
 > nc localhost 30000
 >
-> # STDIN: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+> // STDIN: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
 >
-> # STDOUT: Correct
+> // STDOUT: Correct
 >
-> # STDOUT: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+> // STDOUT: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
 
 2.  From here we now have the password for bandit15 so we can logout of our remote server.
 
