@@ -1,10 +1,10 @@
 
 #### A short description of the project. 
 - SSL Stripping
-  - HTTPS spoofing
+- HTTPS spoofing
 - Man-in-the-middle (different types of attacks)
 - Building a command-line tool to implement the attacks
-- bettercap, nmap and sslstrip (tools for examples)
+- ```bettercap```, ```nmap``` and ```sslstrip``` (tools for examples)
 
 We aim to better understand the process of downgrading HTTPS connections through certain methods such as ARP address spoofing and SSL stripping. To do that, we are using a tool called bettercap to serve as the basis for our own implementation of a submodule that achieves part of this attack.
 
