@@ -43,13 +43,13 @@ net.sniff activates packet sniffing, so bettercap will start capturing and analy
 
 
 #### Working Sites (in process)
-***Sites that worked:***
+**Sites that worked:**
 alibaba
 foxnews
 ign.com
 speedtest.com
 
-***Institutional Sites:***
+**Institutional Sites:**
 carleton.edu
 mit.edu
 washington.edu
