@@ -38,7 +38,8 @@ net.sniff activates packet sniffing, so bettercap will start capturing and analy
 4. net.probe on
 5. net.sniff on
 6. arp.spoof on
-* Note: ```help``` is always available if you don't know what to do.
+
+* Note: ```help``` can be used to view the currently active & inactive modules.
 
 #### Working Sites (in process)
 **Sites that worked:**
