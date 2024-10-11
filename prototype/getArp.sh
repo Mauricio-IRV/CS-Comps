@@ -1,0 +1,1 @@
+arp -a | grep $1 | cut -d " " -f 4
