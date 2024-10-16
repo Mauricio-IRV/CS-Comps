@@ -3,6 +3,9 @@ from networking import *
 from arpspoof import *
 
 def main():
+    # If necessary, enable ip_forwarding
+    enable_ip_forwarding()
+
     arp_spoofer = ArpSpoofer()
 
     target_ip = input("Target IP: ")
