@@ -1,5 +1,0 @@
-10/16
-What's working: We have an ARP spoofer up and running, successfully getting in the middle of the target and the router. 
-Currently working on: The next big step we want to take is modifying the packets as they pass through. 
-So we are first figuring out how to view/filter which are important to our purposes, then we will figure out how to change them.
-Anything else: ...
