@@ -1,4 +1,3 @@
-# TODO IPForwarding
 # TODO network probing 
 # TODO IPTable Rerouting
 from cSubprocess import *
