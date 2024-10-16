@@ -67,6 +67,6 @@ class ArpSpoofer:
 
                 time.sleep(2) # Resend packets every 2 seconds (changing might affect spoofing effectiveness)
         except KeyboardInterrupt:
-            capture = scapy.sniff(iface="eth0", count=10) # Capture ten packets
+            capture = scapy.sniff(iface="eth0", filter="tcp", count=10) # Capture ten packets
             scapy.wrpcap("packet_log.pcap", capture) # Log capture to a file
             self.cleanup(gateway_ip, target_ip) # Restore ARP tables and remove the MITM position
