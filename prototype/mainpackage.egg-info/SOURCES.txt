@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+mainpackage/__init__.py
+mainpackage/arpspoof.py
+mainpackage/bettercap.py
+mainpackage/cSubprocess.py
+mainpackage/dos.py
+mainpackage/exporting.py
+mainpackage/main.py
+mainpackage/networking.py
+mainpackage/sslStripping.py
+mainpackage.egg-info/PKG-INFO
+mainpackage.egg-info/SOURCES.txt
+mainpackage.egg-info/dependency_links.txt
+mainpackage.egg-info/top_level.txt
