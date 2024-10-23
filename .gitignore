@@ -1,3 +1,8 @@
+# Ignore default macos files
 .DS_Store
 *.pyc
 _pycache_/
+
+# Ignore Logs
+packet_log.txt
+packet_log.pcap

@@ -1,6 +1,7 @@
 import scapy.all as scapy
 
 def writeCapture(capture):
+    print("\nSaving capture...")
     scapy.wrpcap("packet_log.pcap", capture)
 
     with open("packet_log.txt", "w") as text_file:
