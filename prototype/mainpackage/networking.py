@@ -1,6 +1,7 @@
 # TODO network probing 
 # TODO IPTable Rerouting
 from cSubprocess import *
+import socket
 
 def set_ip_forwarding(bool):
     cat_cmd = "cat /proc/sys/net/ipv4/ip_forward"
@@ -26,4 +27,8 @@ def ping_address(ip_address):
 def get_mac_address(ip_address):
     ping_address(ip_address)
     command = 'arp -a | grep ' + ip_address + ' | cut -d " " -f 4'
+    return clean_subprocess(command, 0)
+
+def get_ip_address():
+    command = "ifconfig eth0 | grep 'inet ' | awk '{print $2}'"
     return clean_subprocess(command, 0)
