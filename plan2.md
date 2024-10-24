@@ -75,4 +75,4 @@ thereby also promoting collaboration by making sure the next person understands 
    
 - Week 8 - Final testing and presentation rehearsal (definitely more poster stuff).
 
-[Links & Resources](resources)
+[Links & Resources](/notes/resources.md)

@@ -31,4 +31,4 @@
 - Week 8 - Testing and benchmarking
 - Week 9 - Writing, making a poster, final testing, and presentation rehearsal
 
-[Links & Resources](resources)
+[Links & Resources](notes/resources.md)

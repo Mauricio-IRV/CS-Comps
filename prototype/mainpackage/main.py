@@ -7,8 +7,8 @@ from arpspoof import *
 from sslStripping import *
 
 def main():
-    # If necessary, enable ip_forwarding
-    enable_ip_forwarding()
+    # If necessary, disable/enable ip_forwarding
+    set_ip_forwarding(True)
 
     # Arp spoofing setup
     arp_spoofer = ArpSpoofer()
@@ -26,14 +26,14 @@ def main():
         spoof_thread.daemon = True
         spoof_thread.start()
 
-        # Continue... 
+        # Continue main thread...
         print("Continue...")
 
-        # Wait for the spoofing thread to finish
+        # Rejoin main thread and spoof thread
         spoof_thread.join()
 
     except KeyboardInterrupt:
-        # Restore ARP tables and remove the MITM position
+        # Restore ARP tables and remove the AITM position
         arp_spoofer.cleanup(gateway_ip, target_ip)
 
         # End packet capturing

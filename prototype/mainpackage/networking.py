@@ -2,12 +2,15 @@
 # TODO IPTable Rerouting
 from cSubprocess import *
 
-def enable_ip_forwarding():
+def set_ip_forwarding(bool):
     cat_cmd = "cat /proc/sys/net/ipv4/ip_forward"
     cat_rsp = clean_subprocess(cat_cmd, 0)
 
-    if int(cat_rsp) == 0: 
+    if bool is True and not int(cat_rsp) == 1:
         clean_subprocess("bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'", -1)
+        return 1
+    elif bool is False and not int(cat_rsp) == 0:
+        clean_subprocess("bash -c 'echo 0 > /proc/sys/net/ipv4/ip_forward'", -1)
         return 1
     else:
         return 0

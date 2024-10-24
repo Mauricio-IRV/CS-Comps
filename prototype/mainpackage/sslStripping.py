@@ -19,6 +19,8 @@ def ssl_strip(packet):
                 sendp(packet, iface="eth0")
             except:
                 print("Failed to send packet...")
+        else:
+            sendp(packet)
 
         # ? TODO If SRC == default_gateway then replace ack 0 with 1?
 
