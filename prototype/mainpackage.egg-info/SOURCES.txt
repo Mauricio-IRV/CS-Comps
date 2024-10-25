@@ -8,6 +8,8 @@ mainpackage/dos.py
 mainpackage/exporting.py
 mainpackage/main.py
 mainpackage/networking.py
+mainpackage/packetManip.py
+mainpackage/server.py
 mainpackage/sslStripping.py
 mainpackage.egg-info/PKG-INFO
 mainpackage.egg-info/SOURCES.txt
