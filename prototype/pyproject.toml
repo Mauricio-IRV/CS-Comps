@@ -1,3 +1,15 @@
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "arpDoS"
+version = "0.0.1"
+requires-python = ">= 3.8"
+authors = [
+    {name = "Ezra Barber"},
+    {name = "Mauricio Reyes"},
+    {name = "Thea Traw"}
+]
+description = "A scapy-based tool to conduct ARP spoofing and DoS attacks"
+readme = "README.md"
