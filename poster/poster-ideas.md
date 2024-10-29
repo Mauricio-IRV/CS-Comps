@@ -70,6 +70,10 @@ Unveiling the intricacies of an AITM Attack: Understanding Arp Poisoning, Denial
 
 ---
 
+### Presentation Notes:
+
+Real life scenarios of AITM attacks.
+
 #### What was the process like?
 
 #### Challenges
