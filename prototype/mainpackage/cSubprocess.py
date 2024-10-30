@@ -1,5 +1,7 @@
 import subprocess
 
+# Input: A unix command and the lines to print (-1 for no lines)
+# Return: A line filtered stdout
 def clean_subprocess(command, n):
     result = subprocess.run (
         command, 
@@ -12,7 +14,7 @@ def clean_subprocess(command, n):
     stdout_lines = result.stdout.splitlines()
 
     if n == -1:
-        return []
+        return
     if 0 <= n < len(stdout_lines):
         return stdout_lines[n]
     else:

