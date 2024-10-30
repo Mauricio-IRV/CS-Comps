@@ -33,8 +33,12 @@
 
 [Bettercap Usage Tutorial](https://www.youtube.com/watch?v=Peu0AEpHUVs&t=407s)
 
+#### NetFilterQueue
+[Example](https://pypi.org/project/NetfilterQueue/)
+
 #### IPtables Overview
 [Medium Overview](https://sudamtm.medium.com/iptables-a-comprehensive-guide-276b8604eff1)
+[Printing IpTables Rules](https://www.cyberciti.biz/faq/how-to-list-all-iptables-rules-in-linux/)
 
 #### Packet Manipulation
 [ScaPy](https://scapy.net/)
