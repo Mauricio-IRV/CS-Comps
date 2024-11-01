@@ -8,10 +8,7 @@ mainpackage/__init__.py
 mainpackage/arpspoof.py
 mainpackage/bettercap.py
 mainpackage/cSubprocess.py
-mainpackage/dos.py
-mainpackage/exporting.py
 mainpackage/main.py
+mainpackage/modules.py
 mainpackage/networking.py
-mainpackage/packetManip.py
 mainpackage/server.py
-mainpackage/sslStripping.py

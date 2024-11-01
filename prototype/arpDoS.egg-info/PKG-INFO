@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: arpDoS
-Version: 0.0.1
+Version: 0.3
 Summary: A scapy-based tool to conduct ARP spoofing and DoS attacks
 Author: Ezra Barber, Mauricio Reyes, Thea Traw
 Requires-Python: >=3.8
