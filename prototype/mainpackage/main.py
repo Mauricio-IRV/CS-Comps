@@ -36,7 +36,8 @@ def main():
 
     # Packet queueing setup (on packet forward, run method)
     nfqueue = NetfilterQueue()
-    nfqueue.bind(1, lambda x: ssl_strip(x, pkt_handler))
+    # nfqueue.bind(1, lambda x: ssl_strip(x, pkt_handler))
+    nfqueue.bind(1, lambda x: ssl_strip_2(x, target_ip, pkt_handler))
 
     # Start nfqueue and run it on a separate thread
     nfqueue_thread = threading.Thread(target=nfqueue.run)
@@ -72,7 +73,7 @@ def main():
 
         # Unbind netfilterqueue and restore iptables
         nfqueue.unbind()
-        queue_iptables_rule(True)
+        queue_iptables_rule(False)
 
         # End packet capturing
         # capture = capture_device.stop()
