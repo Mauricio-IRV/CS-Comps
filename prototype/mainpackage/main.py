@@ -1,3 +1,4 @@
+  GNU nano 7.2                                        main.py                                                  
 import scapy.all as scapy
 from netfilterqueue import NetfilterQueue
 from bettercap import run_bettercap
@@ -18,7 +19,7 @@ def main():
 
     # Start a Server for testing purposes
     server = Server()
-    server_thread = threading.Thread(target=server.start, args=(8000,))
+    server_thread = threading.Thread(target=server.start, args=(80,))
     server_thread.daemon = True
     server_thread.start()
 
@@ -34,11 +35,12 @@ def main():
     # Create a packet handler
     pkt_handler = Packet_Handler('pkt_log.txt')
 
-    # Arp spoofing setup
+    
+     # Arp spoofing setup
     arp_spoofer = ArpSpoofer()
     target_ip = input("Target IP: ")
     gateway_ip = get_default_gateway_ip()
-
+    '''
     # Packet queueing setup (on packet forward, run method)
     nfqueue = NetfilterQueue()
     # nfqueue.bind(1, lambda x: ssl_strip(x, pkt_handler))
@@ -48,7 +50,7 @@ def main():
     nfqueue_thread = threading.Thread(target=nfqueue.run)
     nfqueue_thread.daemon = True
     nfqueue_thread.start()
-
+    '''
 
     # Begin capturing and processing/analyzing packets
     # target_filter = "tcp port 80 or tcp port 443"
@@ -70,7 +72,7 @@ def main():
         # Rejoin all threads to main thread
         server_thread.join()
         server_thread_2.join()
-        nfqueue_thread.join()
+        #nfqueue_thread.join()
         spoof_thread.join()
 
     except KeyboardInterrupt:
@@ -78,8 +80,8 @@ def main():
         arp_spoofer.cleanup(gateway_ip, target_ip)
 
         # Unbind netfilterqueue and restore iptables
-        nfqueue.unbind()
-        queue_iptables_rule(False)
+        #nfqueue.unbind()
+        #queue_iptables_rule(False)
 
         # End packet capturing
         # capture = capture_device.stop()
@@ -97,3 +99,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
