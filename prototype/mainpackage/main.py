@@ -11,16 +11,21 @@ from modules import *
 
 def main():
     # If necessary, enable/disable ip_forwarding
-    set_ip_forwarding(True)
+    set_ip_forwarding(False)
 
     # Enable queueing rule in iptables
-    queue_iptables_rule(True)
+    # queue_iptables_rule(False)
 
     # Start a Server for testing purposes
     server = Server()
-    server_thread = threading.Thread(target=server.start)
+    server_thread = threading.Thread(target=server.start, args=(8000,))
     server_thread.daemon = True
     server_thread.start()
+
+    server_2 = Server()
+    server_thread_2 = threading.Thread(target=server_2.start, args=(443,))
+    server_thread_2.daemon = True
+    server_thread_2.start()
 
     # Wait for the server to start
     while not server.is_ready():
@@ -64,6 +69,7 @@ def main():
 
         # Rejoin all threads to main thread
         server_thread.join()
+        server_thread_2.join()
         nfqueue_thread.join()
         spoof_thread.join()
 
@@ -80,10 +86,11 @@ def main():
         # writeCapture(capture)
 
         # Stop Server
-        server.stop()
+        server_thread.stop()
+        server_thread_2.stop()
         
         # Disable IP_Forwarding (Default)
-        set_ip_forwarding(False)
+        # set_ip_forwarding(False)
 
         # Write handled packets to a file
         pkt_handler.write_to_file()

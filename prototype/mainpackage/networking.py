@@ -1,4 +1,21 @@
 from cSubprocess import *
+import socket
+import re
+
+# Input: A host url or string containing an ip
+def get_ip_address(url: str):
+    ip_address = None
+
+    try:
+        ip_address = socket.gethostbyname(url)
+    except:
+        try:
+            ip_arr = re.findall(r'[0-9]+(?:\.[0-9]+){3}', url)
+            ip_address = ip_arr[0]
+        except:
+            pass
+    
+    return ip_address
 
 # Input: Boolean to define ip_forwarding
 def set_ip_forwarding(bool: bool):
@@ -14,15 +31,17 @@ def set_ip_forwarding(bool: bool):
     else:
         return 0
 
-# Input: Boolean to define whether to set or unset the queueing iptables rule
-def queue_iptables_rule(bool: bool):
-    if bool is True:
-        command = "sudo iptables -I FORWARD -j NFQUEUE --queue-num 1"
-        return clean_subprocess(command, -1)
+# # Input: Boolean to define whether to set or unset the queueing iptables rule
+# def queue_iptables_rule(bool: bool):
+#     if bool is True:
+#         # command = "sudo iptables -I FORWARD -j NFQUEUE --queue-num 1"
+#         command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
+#         return clean_subprocess(command, -1)
     
-    elif bool is False:
-        command = "sudo iptables -D FORWARD -j NFQUEUE --queue-num 1"
-        return clean_subprocess(command, -1)
+#     elif bool is False:
+#         # command = "sudo iptables -D FORWARD -j NFQUEUE --queue-num 1"
+#         command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
+#         return clean_subprocess(command, -1)
 
 def print_iptables_rules():
     command = "sudo iptables -L -v -n"
