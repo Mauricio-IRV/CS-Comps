@@ -39,7 +39,6 @@ class ProxyHTTPRequestHandler(SimpleHTTPRequestHandler):
         # # Write the modified content back to the client
         # self.wfile.write(content)
 
-    
     def do_POST(self):
         # Handle post requests
         pass
