@@ -3,6 +3,7 @@ from scapy.layers.http import *
 from netfilterqueue import NetfilterQueue
 import socket
 import re
+import requests
 
 from networking import *
 from export import *
@@ -20,9 +21,21 @@ from export import *
 
 '''
 ------------------------
-SSL STRIP METHODS
+SSL STRIP HELPER METHODS
 ------------------------
 '''
+
+def ssl_strip():
+    pass
+
+def print_resp(resp, verbose):
+    print("\nResponse Headers:")
+    for header, value in resp.headers.items():
+        print(f"{header}: {value}")
+        
+    if verbose:
+        print("\nContent:")
+        print(resp.content)
 
 # Input: A Decoded Scapy Packet Payload
 def get_host(payload):
@@ -36,20 +49,6 @@ def get_host(payload):
             break
     
     return host
-
-# Input: Destination IP & optionally also the port
-def make_http_request(destination: str):
-    client = HTTP_Client()
-    resp = client.request("http://" + destination)
-    client.close()
-
-    return resp
-
-'''
----------------------
-SSL STRIP MAIN METHOD
----------------------
-'''
 
 # Input: Routed packet
 # Description: Deny service by dropping packets on route

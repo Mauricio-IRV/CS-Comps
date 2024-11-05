@@ -2,21 +2,6 @@ from cSubprocess import *
 import socket
 import re
 
-# Input: A host url or string containing an ip
-def get_ip_address(url: str):
-    ip_address = None
-
-    try:
-        ip_address = socket.gethostbyname(url)
-    except:
-        try:
-            ip_arr = re.findall(r'[0-9]+(?:\.[0-9]+){3}', url)
-            ip_address = ip_arr[0]
-        except:
-            pass
-    
-    return ip_address
-
 # Input: Boolean to define ip_forwarding
 def set_ip_forwarding(bool: bool):
     cat_cmd = "cat /proc/sys/net/ipv4/ip_forward"
@@ -32,20 +17,35 @@ def set_ip_forwarding(bool: bool):
         return 0
 
 # # Input: Boolean to define whether to set or unset the queueing iptables rule
-# def queue_iptables_rule(bool: bool):
-#     if bool is True:
-#         # command = "sudo iptables -I FORWARD -j NFQUEUE --queue-num 1"
-#         command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
-#         return clean_subprocess(command, -1)
+def queue_iptables_rule(bool: bool):
+    if bool is True:
+        # command = "sudo iptables -I FORWARD -j NFQUEUE --queue-num 1"
+        command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
+        return clean_subprocess(command, -1)
     
-#     elif bool is False:
-#         # command = "sudo iptables -D FORWARD -j NFQUEUE --queue-num 1"
-#         command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
-#         return clean_subprocess(command, -1)
+    elif bool is False:
+        # command = "sudo iptables -D FORWARD -j NFQUEUE --queue-num 1"
+        command = "sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
+        return clean_subprocess(command, -1)
 
 def print_iptables_rules():
-    command = "sudo iptables -L -v -n"
+    command = "sudo iptables -t nat -L -n -v"
     return clean_subprocess(command, -1)
+
+# Input: A host url or string containing an ip
+def get_urls_ip(url: str):
+    ip_address = None
+
+    try:
+        ip_address = socket.gethostbyname(url)
+    except:
+        try:
+            ip_arr = re.findall(r'[0-9]+(?:\.[0-9]+){3}', url)
+            ip_address = ip_arr[0]
+        except:
+            pass
+    
+    return ip_address
 
 # Input: An address within a subnetwork (e.g. gateway ipaddress)
 # Description: Perform a ping scan on the subnet associated with the ipaddress

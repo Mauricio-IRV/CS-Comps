@@ -1,4 +1,3 @@
-  GNU nano 7.2                                        main.py                                                  
 import scapy.all as scapy
 from netfilterqueue import NetfilterQueue
 from bettercap import run_bettercap
@@ -8,14 +7,13 @@ import time
 from networking import *
 from arpspoof import *
 from server import *
-from modules import *
 
 def main():
     # If necessary, enable/disable ip_forwarding
-    set_ip_forwarding(False)
+    # set_ip_forwarding(False)
 
     # Enable queueing rule in iptables
-    # queue_iptables_rule(False)
+    # queue_iptables_rule(True)
 
     # Start a Server for testing purposes
     server = Server()
@@ -23,10 +21,10 @@ def main():
     server_thread.daemon = True
     server_thread.start()
 
-    server_2 = Server()
-    server_thread_2 = threading.Thread(target=server_2.start, args=(443,))
-    server_thread_2.daemon = True
-    server_thread_2.start()
+    # server_2 = Server()
+    # server_thread_2 = threading.Thread(target=server_2.start, args=(443,))
+    # server_thread_2.daemon = True
+    # server_thread_2.start()
 
     # Wait for the server to start
     while not server.is_ready():
@@ -40,17 +38,21 @@ def main():
     arp_spoofer = ArpSpoofer()
     target_ip = input("Target IP: ")
     gateway_ip = get_default_gateway_ip()
-    '''
+
     # Packet queueing setup (on packet forward, run method)
-    nfqueue = NetfilterQueue()
+    # nfqueue = NetfilterQueue()
     # nfqueue.bind(1, lambda x: ssl_strip(x, pkt_handler))
-    nfqueue.bind(1, lambda x: ssl_strip_2(x, target_ip, pkt_handler))
+    # nfqueue.bind(1, lambda x: ssl_strip(x, target_ip, pkt_handler))
 
     # Start nfqueue and run it on a separate thread
-    nfqueue_thread = threading.Thread(target=nfqueue.run)
-    nfqueue_thread.daemon = True
-    nfqueue_thread.start()
-    '''
+    # nfqueue_thread = threading.Thread(target=nfqueue.run)
+    # nfqueue_thread.daemon = True
+    # nfqueue_thread.start()
+
+    # nfqueue_thread = threading.Thread(target=nfqueue.run)
+    # nfqueue_thread.daemon = True
+    # nfqueue_thread.start()
+
 
     # Begin capturing and processing/analyzing packets
     # target_filter = "tcp port 80 or tcp port 443"
@@ -67,12 +69,14 @@ def main():
         spoof_thread.start()
 
         # Continue main thread...
-        print("Continue...") 
+        print("Continue...")
 
         # Rejoin all threads to main thread
         server_thread.join()
-        server_thread_2.join()
+        # server_thread_2.join()
         #nfqueue_thread.join()
+        # server_thread_2.join()
+        # nfqueue_thread.join()
         spoof_thread.join()
 
     except KeyboardInterrupt:
@@ -82,14 +86,16 @@ def main():
         # Unbind netfilterqueue and restore iptables
         #nfqueue.unbind()
         #queue_iptables_rule(False)
+        # nfqueue.unbind()
+        # queue_iptables_rule(False)
 
         # End packet capturing
         # capture = capture_device.stop()
         # writeCapture(capture)
 
         # Stop Server
-        server_thread.stop()
-        server_thread_2.stop()
+        server.stop()
+        # server_2.stop()
         
         # Disable IP_Forwarding (Default)
         # set_ip_forwarding(False)
