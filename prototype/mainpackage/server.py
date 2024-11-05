@@ -11,6 +11,9 @@ import requests
 
 class ProxyHTTPRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
+
+        super().do_GET()
+        '''
         # Forward the request to the target server
         resp = requests.get("http://danger.jeffondich.com/")
         b_content = None
@@ -35,6 +38,7 @@ class ProxyHTTPRequestHandler(SimpleHTTPRequestHandler):
             print(f"Sent: {header}: {value}")
         self.end_headers()
         self.wfile.write(b_content)
+        '''
 
 class Server:
     def __init__(self):
