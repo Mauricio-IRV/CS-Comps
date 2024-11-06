@@ -14,97 +14,102 @@ import requests
 class ProxyHTTPRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
 
-        #print(f"Received GET request: {self.command} {self.path}")
-        #print(f"Request Headers: {self.headers}")
+        if self.server.server_address[1] == 80:
 
-        target_url = f"http://{self.headers['Host']}{self.path}"
-        #target_url = f"http://{self.headers['Host']}{self.path}"
-        print("target url below")
-        print(target_url)
-        print(self.server.server_address[1])
+            #print(f"Received GET request: {self.command} {self.path}")
+            #print(f"Request Headers: {self.headers}")
+    
+            target_url = f"http://{self.headers['Host']}{self.path}"
+            #target_url = f"http://{self.headers['Host']}{self.path}"
+            print("target url below")
+            print(target_url)
+            print(self.server.server_address[1])
+    
+            #target_url_secure = f"https://{self.headers['Host']}{self.path}"
+            target_url_secure = f"https://{self.headers['Host']}{self.path}"
+    
+            credentials = ""
+    
+            try:
+                e_credentials = self.headers.get("Authorization")
+                d_credentials = base64.b64decode(e_credentials.split(" ")[1]).decode('utf-8') 
+                print(d_credentials) 
+                credentials = (d_credentials.split(":")[0], d_credentials.split(":")[1])  
+            except: 
+                pass
+    
+            print(credentials)
+    
+    
+            # Forward the request to the destination server
+            try:
+                # Forward the request to the target server
+                #client_headers = dict(self.headers)
+    
+                #resp = requests.get(target_url_secure, headers=self.headers, verify=True, allow_redirects=True)
+                
+                if len(credentials) == 0:
+                    resp = requests.get(target_url_secure)
+                else:
+                    resp = requests.get(target_url_secure, auth=credentials)
+                #print(resp.text)
+                print("host header")
+                print(self.headers['Host'])
+                print(resp.status_code)
+    
+    
+                b_content = resp.content
+    
+                
+                # Modify HTTP(S) Headers / Response
+                try: b_content = b_content.replace(b"https://", b"http://")
+                except: pass
+    
+                try: resp.headers.pop("Strict-Transport-Security", None)
+                except: pass
+    
+                try: resp.headers.pop("Transfer-Encoding", None)
+                except: pass
+    
+                try: resp.headers.pop("Content-Encoding", None)
+                except: pass
+                
+                try: resp.headers.pop("Expect-CT", None)
+                except: pass
+    
+                try: resp.headers.pop("Upgrade-Insecure-Requests", None)
+                except: pass
+    
+                print("trying to send back to client")
+                print(self.client_address)
+    
+                # Send the response headers back to the client
+                self.send_response(resp.status_code)
+                for header, value in resp.headers.items():
+    
+                    try: 
+                        if header == "Set-Cookie":
+                            value = value.replace(f"Secure", f"")
+                    except: 
+                        pass
+    
+    
+    
+                    self.send_header(header, value)
+                    print(f"Sent: {header}: {value}")
+    
+                self.end_headers()
+                # Send the response body back to the client
+                #self.wfile.write(data)
+                self.wfile.write(b_content)
+                #print("body of response")
+                #print(resp.text)
+    
+            except Exception as e:
+                self.send_error(502, "Bad Gateway", str(e))
 
-        #target_url_secure = f"https://{self.headers['Host']}{self.path}"
-        target_url_secure = f"https://{self.headers['Host']}{self.path}"
-
-        credentials = ""
-
-        try:
-            e_credentials = self.headers.get("Authorization")
-            d_credentials = base64.b64decode(e_credentials.split(" ")[1]).decode('utf-8') 
-            print(d_credentials) 
-            credentials = (d_credentials.split[":"][0], d_credentials.split[":"][1])  
-        except: 
+        if self.server.server_address[1] == 443:
             pass
-
-        print(credentials)
-
-
-        # Forward the request to the destination server
-        try:
-            # Forward the request to the target server
-            #client_headers = dict(self.headers)
-
-            #resp = requests.get(target_url_secure, headers=self.headers, verify=True, allow_redirects=True)
-            
-            if len(credentials) == 0:
-                resp = requests.get(target_url_secure)
-            else:
-                resp = requests.get(target_url_secure, auth=credentials)
-            #print(resp.text)
-            print("host header")
-            print(self.headers['Host'])
-            print(resp.status_code)
-
-
-            b_content = resp.content
-
-            
-            # Modify HTTP(S) Headers / Response
-            try: b_content = b_content.replace(b"https://", b"http://")
-            except: pass
-
-            try: resp.headers.pop("Strict-Transport-Security", None)
-            except: pass
-
-            try: resp.headers.pop("Transfer-Encoding", None)
-            except: pass
-
-            try: resp.headers.pop("Content-Encoding", None)
-            except: pass
-            
-            try: resp.headers.pop("Expect-CT", None)
-            except: pass
-
-            try: resp.headers.pop("Upgrade-Insecure-Requests", None)
-            except: pass
-
-            print("trying to send back to client")
-            print(self.client_address)
-
-            # Send the response headers back to the client
-            self.send_response(resp.status_code)
-            for header, value in resp.headers.items():
-
-                try: 
-                    if header == "Set-Cookie":
-                        value = value.replace(f"Secure", f"")
-                except: 
-                    pass
-
-
-
-                self.send_header(header, value)
-                print(f"Sent: {header}: {value}")
-
-            self.end_headers()
-            # Send the response body back to the client
-            #self.wfile.write(data)
-            self.wfile.write(b_content)
-            #print("body of response")
-            #print(resp.text)
-
-        except Exception as e:
-            self.send_error(502, "Bad Gateway", str(e))
 
 
 class Server:
