@@ -1,7 +1,11 @@
 ## README for the package
 
 ### Overview
-ArpDoS is a package that allows you to set up an adversary-in-the-middle (AITM) attack against the device of your choice, implementing ARP spoofing and packet modification.
+ArpDoS is a package that allows you to set up an adversary-in-the-middle (AITM) attack against the device of your choice, implementing:
+* ARP spoofing
+* packet modification
+* SSL stripping
+* HTTP downgrading
 ### Installation Instructions
 * To install the project, clone the git repo into a folder and cd into `CS-Comps/prototype/`. Then run the following commands (again, only on Kali):
     * `sudo apt install libnfnetlink-dev libnetfilter-queue-dev`
