@@ -7,17 +7,19 @@ import time
 from networking import *
 from arpspoof import *
 from server import *
+from export import Packet_Handler
+from modules import *
 
 def main():
     # If necessary, enable/disable ip_forwarding
-    # set_ip_forwarding(False)
+    # set_ip_forwarding(True)
 
     # Enable queueing rule in iptables
     # queue_iptables_rule(True)
 
     # Start a Server for testing purposes
     server = Server()
-    server_thread = threading.Thread(target=server.start, args=(80,))
+    server_thread = threading.Thread(target=server.start, args=(8000,))
     server_thread.daemon = True
     server_thread.start()
 
@@ -28,11 +30,10 @@ def main():
 
     # Wait for the server to start
     while not server.is_ready():
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     # Create a packet handler
     pkt_handler = Packet_Handler('pkt_log.txt')
-
     
      # Arp spoofing setup
     arp_spoofer = ArpSpoofer()
@@ -59,6 +60,8 @@ def main():
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip, filter=target_filter)
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip, filter="tcp")
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip)
+    # capture_device = scapy.AsyncSniffer(iface="eth0", prn=lambda x: ssl_strip(x), filter="tcp")
+    
     # capture_device = scapy.AsyncSniffer(iface="eth0", filter=target_filter)
     # capture_device.start()
 
@@ -85,8 +88,6 @@ def main():
 
         # Unbind netfilterqueue and restore iptables
         #nfqueue.unbind()
-        #queue_iptables_rule(False)
-        # nfqueue.unbind()
         # queue_iptables_rule(False)
 
         # End packet capturing

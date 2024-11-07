@@ -8,26 +8,6 @@ import requests
 from networking import *
 from export import *
 
-# Receive all of the packets from the client
-
-# send own https request to the server
-# The request IP should be from the AITM
-
-# Receive the packets from the server
-
-# Manipulate the server https response
-# Strip strict-transfer-protocol
-# Replace https links with http
-
-'''
-------------------------
-SSL STRIP HELPER METHODS
-------------------------
-'''
-
-def ssl_strip():
-    pass
-
 def print_resp(resp, verbose):
     print("\nResponse Headers:")
     for header, value in resp.headers.items():
