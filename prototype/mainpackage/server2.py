@@ -8,9 +8,6 @@ from networking import *
 from modules import *
 from scapy.layers.http import *
 
-from http.server import SimpleHTTPRequestHandler
-import requests
-
 class ProxyHTTPRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
 
