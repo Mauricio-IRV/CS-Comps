@@ -3,8 +3,8 @@ from urllib.parse import urlparse
 import http.client
 
 from networking import *
-import socket
-import struct
+from modules import orig_dsts
+import time
 
 ''' Big Idea:
 # Receive all of the packets from the client
@@ -56,22 +56,17 @@ Somewhat works but is quite buggy
 '''
 
 class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
-    original_destination = None
 
     def do_GET(self):
-        # Access the original destination stored by the server
-        if self.original_destination: original_ip, original_port = self.original_destination
-
-        # target_host = "jeffondich.com"
-        # target_host = "github.com"
-        target_host = socket.gethostbyaddr(original_ip)[0]
-        target_path = urlparse(self.path).path
+        # Parse dst host and path
+        dst_host = self.headers.get('Host')
+        dst_path = urlparse(self.path).path
 
         # Create a connection to the target server
-        conn = http.client.HTTPSConnection(target_host)
+        conn = http.client.HTTPSConnection(dst_host)
 
         # Forward the request to the target server
-        conn.request("GET", target_path)
+        conn.request("GET", dst_path)
 
         # Get the response
         response = conn.getresponse()
@@ -85,7 +80,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
             parsed_url = urlparse(new_location)
             
             if not parsed_url.netloc:  # If it's a relative URL
-                new_location = f"https://{target_host}{parsed_url.path}"
+                new_location = f"https://{dst_host}{parsed_url.path}"
 
             # Create a new connection to the new location
             new_conn = http.client.HTTPSConnection(urlparse(new_location).netloc)
@@ -108,7 +103,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
             self.end_headers()
 
-            # Write content to wfile
+            # Write content to wfile in chunks
             chunk_size = 8192
             for i in range(0, len(b_content), chunk_size):
                 chunk = b_content[i:i + chunk_size]
@@ -137,21 +132,6 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
         conn.close()
 
-class MyHTTPServer(HTTPServer):
-    def finish_request(self, request, client_address):
-        original_ip, original_port = self.get_original_destination(request)
-        self.RequestHandlerClass.original_destination = (original_ip, original_port)
-        super().finish_request(request, client_address) # Proceed with the usual request handling
-
-    def get_original_destination(self, request):
-        socket_orig_dst = 80
-        packed_dst = request.getsockopt(socket.SOL_IP, socket_orig_dst, 16) # Retrieve the original destination address and port (before NAT modifications).
-        port = int.from_bytes(packed_dst[2:4], byteorder='big')             # First 2 bytes are padding & next 2 are the port
-        raw_ip = packed_dst[4:8]                # The last 4 bytes are the IP address in raw byte form.
-        ip_address = socket.inet_ntoa(raw_ip)   # Convert to ip's standard dotted decimal string
-        
-        return ip_address, port
-
 
 class Server:
     def __init__(self, http_daemon = None, target_ip = None, is_ready_bool = False):
@@ -161,7 +141,7 @@ class Server:
 
     def start(self, port: int):
         # Create a HTTP server with the specified port
-        self.http_daemon = MyHTTPServer(("", port), ProxyHTTPRequestHandler)
+        self.http_daemon = HTTPServer(("", port), ProxyHTTPRequestHandler)
         
         # Print serving ip address / port & update server status
         print("Serving at", get_ip_address() + ":" + str(port) + "\n")

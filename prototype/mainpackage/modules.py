@@ -1,12 +1,23 @@
 from scapy.all import Ether, TCP, IP, UDP, Raw, wrpcap, sendp, send
 from scapy.layers.http import *
 from netfilterqueue import NetfilterQueue
-import socket
-import re
-import requests
 
 from networking import *
 from export import *
+import socket
+
+orig_dsts = {}
+
+def pkt_sniffer(pkt, target_ip):
+    try:
+        if IP in pkt and TCP in pkt and pkt[IP].src == target_ip:
+            # Store dst ip as key and dst host as value
+            key = pkt[IP].dst
+            dst_host = socket.gethostbyaddr(pkt[IP].dst)[0]
+            orig_dsts[key] = dst_host
+    except:
+        pass
+
 
 def print_resp(resp, verbose):
     print("\nResponse Headers:")

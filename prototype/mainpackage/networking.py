@@ -8,10 +8,10 @@ def set_ip_forwarding(bool: bool):
     cat_rsp = clean_subprocess(cat_cmd, 0)
 
     if bool is True and not int(cat_rsp) == 1:
-        clean_subprocess("bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'", -1)
+        clean_subprocess("sudo bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'", -1)
         return 1
     elif bool is False and not int(cat_rsp) == 0:
-        clean_subprocess("bash -c 'echo 0 > /proc/sys/net/ipv4/ip_forward'", -1)
+        clean_subprocess("sudo bash -c 'echo 0 > /proc/sys/net/ipv4/ip_forward'", -1)
         return 1
     else:
         return 0
@@ -20,12 +20,12 @@ def set_ip_forwarding(bool: bool):
 def queue_iptables_rule(bool: bool):
     if bool is True:
         # command = "sudo iptables -I FORWARD -j NFQUEUE --queue-num 1"
-        command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
+        command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 80"
         return clean_subprocess(command, -1)
     
     elif bool is False:
         # command = "sudo iptables -D FORWARD -j NFQUEUE --queue-num 1"
-        command = "sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000"
+        command = "sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 80"
         return clean_subprocess(command, -1)
 
 def print_iptables_rules():

