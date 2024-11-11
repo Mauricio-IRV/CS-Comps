@@ -57,6 +57,59 @@ Somewhat works but is quite buggy
 
 class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
+
+    def do_POST(self):
+         
+        # Parse dst host and path
+        dst_host = self.headers.get('Host')
+        dst_path = urlparse(self.path).path
+
+        # Get the contents of the POST request
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        
+        # Connect to the target server
+        conn = http.client.HTTPSConnection(dst_host)
+
+        print("POST REQUEST")
+        print(post_data)
+        print(self.headers)
+
+        if "Origin" in self.headers:
+            self.headers["Origin"] = self.headers["Origin"].replace("http", "https")
+
+        if "Referer" in self.headers:
+            self.headers["Referer"] = self.headers["Referer"].replace("http", "https")
+
+        # will have to add some kind of cookie?? Interesting error from GitHub
+            
+        print("MODIFIED HEADERS")
+        print(self.headers)
+        
+        # Forward the request to the target server
+        conn.request("POST", dst_path, post_data)
+
+        # Get the response
+        response = conn.getresponse()
+
+        print("POST RESPONSE")
+        print(response)
+        
+        self.send_response(response.status)
+        b_content = response.read()
+
+        # Send headers
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+            
+        # Write content to wfile
+        chunk_size = 8192
+        for i in range(0, len(b_content), chunk_size):
+            chunk = b_content[i:i + chunk_size]
+            self.wfile.write(chunk)
+
+        conn.close()
+            
     def do_GET(self):
         # Parse dst host and path
         dst_host = self.headers.get('Host')
@@ -71,6 +124,9 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
         # Get the response
         response = conn.getresponse()
 
+        if "Strict-Transport-Security" in response.headers:
+            del response.headers["Strict-Transport-Security"]
+        
         # Check for 301 redirect
         if response.status == 301:
             # Extract the new location from the response headers
@@ -88,6 +144,10 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
             
             # Get the new response
             new_response = new_conn.getresponse()
+
+            if "Strict-Transport-Security" in new_response.headers:
+                del new_response.headers["Strict-Transport-Security"]
+            
             # Handle the new response as needed
             # print("new_response:", new_response.status, new_response.reason)
             # print("new_response:", new_response.headers)

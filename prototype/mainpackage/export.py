@@ -1,6 +1,6 @@
 from scapy.all import Ether, TCP, IP, UDP, Raw, wrpcap, send 
 from networking import *
-from netfilterqueue import NetfilterQueue
+#from netfilterqueue import NetfilterQueue
 
 # Input: Routed packet
 # Description: Print & accept packets that are being forwarded through the device

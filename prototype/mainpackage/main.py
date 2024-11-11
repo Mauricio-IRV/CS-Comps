@@ -1,5 +1,5 @@
 import scapy.all as scapy
-from netfilterqueue import NetfilterQueue
+#from netfilterqueue import NetfilterQueue
 from bettercap import run_bettercap
 import threading
 import time
