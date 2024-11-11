@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "arpDoS"
-version = "0.4"
+name = "arp-ssl-toolkit"
+version = "0.5"
 requires-python = ">= 3.8"
 authors = [
     {name = "Ezra Barber"},
