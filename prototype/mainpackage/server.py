@@ -140,7 +140,10 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
         b_content = response.read()
 
         # Send headers
-        self.send_header('Content-type', 'text/html')
+        # self.send_header('Content-type', 'text/html')
+        for header, value in response.headers.items():
+            self.send_header(header, value)
+
         self.end_headers()
             
         # Write content to wfile
@@ -169,7 +172,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
             del response.headers["Strict-Transport-Security"]
         
         # Check for 301 redirect
-        if response.status == 301:
+        if response.status == 301 or response.status == 308:
             # Extract the new location from the response headers
             new_location = response.getheader('Location')
             
@@ -201,6 +204,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
             
             # Send headers
             self.send_header('Content-type', 'text/html')
+            self.send_header('Set-Cookie', 'text/html')
 
             self.end_headers()
 
@@ -223,6 +227,7 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
             # Send headers
             self.send_header('Content-type', 'text/html')
+            self.send_header('Set-Cookie', 'text/html')
             self.end_headers()
             
             # Write content to wfile
