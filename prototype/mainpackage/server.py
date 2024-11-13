@@ -204,7 +204,6 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
             
             # Send headers
             self.send_header('Content-type', 'text/html')
-            self.send_header('Set-Cookie', 'text/html')
 
             self.end_headers()
 
@@ -227,7 +226,6 @@ class ProxyHTTPRequestHandler(BaseHTTPRequestHandler):
 
             # Send headers
             self.send_header('Content-type', 'text/html')
-            self.send_header('Set-Cookie', 'text/html')
             self.end_headers()
             
             # Write content to wfile
