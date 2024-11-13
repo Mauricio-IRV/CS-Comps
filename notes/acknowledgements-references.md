@@ -1,4 +1,7 @@
 ### Acknowledgements
+
+---
+
 Huge thanks to Jeff Ondich for his assistance on guiding us and helping us clarify many areas where we lacked understanding.
 
 ### References
