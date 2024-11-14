@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: arpDoS
-Version: 0.4
+Name: arp-ssl-toolkit
+Version: 0.6
 Summary: A scapy-based tool to conduct ARP spoofing and DoS attacks
 Author: Ezra Barber, Mauricio Reyes, Thea Traw
 Requires-Python: >=3.8

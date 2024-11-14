@@ -1,9 +1,9 @@
 README.md
 pyproject.toml
-arpDoS.egg-info/PKG-INFO
-arpDoS.egg-info/SOURCES.txt
-arpDoS.egg-info/dependency_links.txt
-arpDoS.egg-info/top_level.txt
+arp_ssl_toolkit.egg-info/PKG-INFO
+arp_ssl_toolkit.egg-info/SOURCES.txt
+arp_ssl_toolkit.egg-info/dependency_links.txt
+arp_ssl_toolkit.egg-info/top_level.txt
 mainpackage/__init__.py
 mainpackage/arpspoof.py
 mainpackage/bettercap.py
