@@ -15,3 +15,10 @@
 - What did we learn?
 
 ### Overview of pitch
+- Two virtual machines and a server
+- One attacks the other via ARP impersonation
+    - The attacker then starts intercepting traffic to the attacker's own server after connecting securely to the server
+    - Attacker prevents security headers from going to server, but forwards the other information
+- Attacker returns modified webpage from server to target
+    - Page has JavaScript embedded in it to keylog their login page
+- Chaos ensues
