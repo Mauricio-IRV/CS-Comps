@@ -50,11 +50,6 @@ def main():
     # nfqueue_thread.daemon = True
     # nfqueue_thread.start()
 
-    # nfqueue_thread = threading.Thread(target=nfqueue.run)
-    # nfqueue_thread.daemon = True
-    # nfqueue_thread.start()
-
-
     # Begin capturing and processing/analyzing packets
     # target_filter = "tcp port 80 or tcp port 443"
     # capture_device = scapy.AsyncSniffer(iface="eth0", prn=ssl_strip, filter=target_filter)

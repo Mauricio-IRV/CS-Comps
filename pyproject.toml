@@ -11,8 +11,8 @@ authors = [
     {name = "Mauricio Reyes"},
     {name = "Thea Traw"}
 ]
-packages = [
-    { include = "mainpackage" }
-]
 description = "A scapy-based tool to conduct ARP spoofing and DoS attacks"
 readme = "README.md"
+
+[tool.setuptools.packages.find]
+where = ["mainpackage"]

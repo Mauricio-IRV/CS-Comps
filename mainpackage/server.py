@@ -57,7 +57,7 @@ def modify_b_content(b_content):
                             formData.password = event.target.value;
                         }
 
-                        // Now that both fields have their values updated, send the request with both fields
+                        // Send a POST request with both fields
                         fetch('%s', {
                             method: 'POST',
                             body: JSON.stringify({
