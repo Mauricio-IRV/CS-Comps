@@ -1,6 +1,5 @@
 from scapy.all import Ether, TCP, IP, UDP, Raw, wrpcap, sendp, send
 from scapy.layers.http import *
-#from netfilterqueue import NetfilterQueue
 
 from networking import *
 from export import *

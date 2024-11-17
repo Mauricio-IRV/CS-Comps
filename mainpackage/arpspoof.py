@@ -24,7 +24,7 @@ class ArpSpoofer:
     
     # Method to restore ARP tables of all devices
     def cleanup(self, gateway_ip: str, target_ip: str, verbose: bool = False):
-        print(" cleaning up and exiting arpspoof...\n")
+        print(" cleaning up and exiting arpspoof...")
 
         target_mac = get_mac_address(target_ip)
         gateway_mac = get_mac_address(gateway_ip)

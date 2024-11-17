@@ -1,5 +1,4 @@
 from cSubprocess import *
-import socket
 import re
 
 # Input: Boolean to define ip_forwarding
@@ -15,37 +14,32 @@ def set_ip_forwarding(bool: bool):
         return 1
     else:
         return 0
+    
+def get_ip_forwarding():
+    cat_cmd = "cat /proc/sys/net/ipv4/ip_forward"
+    cat_rsp = clean_subprocess(cat_cmd, 0)
+    return cat_rsp
 
-# # Input: Boolean to define whether to set or unset the queueing iptables rule
-def queue_iptables_rule(bool: bool):
-    if bool is True:
-        # command = "sudo iptables -I FORWARD -j NFQUEUE --queue-num 1"
-        command = "sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 80"
+# Input: Boolean to define whether to set or unset the queueing iptables rule
+def queue_iptables_rule(bool: bool, port: int):
+    command = f"sudo iptables -t nat -L -n -v | grep -E 'REDIRECT.*ports {port}'"
+    rsp = clean_subprocess(command, 0)
+    ruleExists = False
+    if rsp is not None:
+        ruleExists = re.search(f"REDIRECT.*{port}", rsp) is not None
+
+    if bool is True and not ruleExists:
+        command = f"sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port {port}"
         return clean_subprocess(command, -1)
     
-    elif bool is False:
-        # command = "sudo iptables -D FORWARD -j NFQUEUE --queue-num 1"
-        command = "sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 80"
+    elif bool is False and ruleExists:
+        command = f"sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port {port}"
         return clean_subprocess(command, -1)
 
-def print_iptables_rules():
+def get_iptables_rules():
     command = "sudo iptables -t nat -L -n -v"
-    return clean_subprocess(command, -1)
-
-# Input: A host url or string containing an ip
-def get_urls_ip(url: str):
-    ip_address = None
-
-    try:
-        ip_address = socket.gethostbyname(url)
-    except:
-        try:
-            ip_arr = re.findall(r'[0-9]+(?:\.[0-9]+){3}', url)
-            ip_address = ip_arr[0]
-        except:
-            pass
-    
-    return ip_address
+    rsp = clean_subprocess(command)
+    return rsp
 
 # Input: An address within a subnetwork (e.g. gateway ipaddress)
 # Description: Perform a ping scan on the subnet associated with the ipaddress

