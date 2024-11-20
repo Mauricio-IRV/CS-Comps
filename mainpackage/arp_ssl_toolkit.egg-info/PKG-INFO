@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: arp-ssl-toolkit
+Version: 0.7
+Summary: A scapy-based tool to conduct ARP spoofing and DoS attacks
+Author: Ezra Barber, Mauricio Reyes, Thea Traw
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# CS-Comps
+
+### Overview
+ARP_SSL_Toolkit is a package that allows you to set up an adversary-in-the-middle (AITM) attack against another device, implementing:
+* ARP spoofing
+* Denial of Service
+* SSL stripping
+* HTTP downgrading
+### Installation Instructions
+* To install the project, clone the git repo into a folder and cd into `CS-Comps/prototype/`. Then run the following commands (again, only on Kali):
+    * `pip3 install scapy`
+    * `pip3 install requests`
+* To start the adversary-in-the-middle attack, run `sudo python3 main.py` on the attacker machine.
+
+> Note: The pyproject.toml is only for the python package build, and is completely irrelevant for anything other than intermittently packaging binaries for the resulting program.
