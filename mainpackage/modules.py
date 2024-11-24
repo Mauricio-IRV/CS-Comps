@@ -40,8 +40,3 @@ def get_host(payload):
     
     return host
 
-# Input: Routed packet
-# Description: Deny service by dropping packets on route
-def dos(pkt):
-    print("Packet dropped: ", pkt)
-    pkt.drop()
