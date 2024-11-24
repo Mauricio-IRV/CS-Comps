@@ -22,10 +22,8 @@ ARP_SSL_Toolkit is a package that allows you to set up an adversary-in-the-middl
 * To start the adversary-in-the-middle attack, run sudo python3 main.py on the attacker machine.
    * You will be prompted to specify the IP of the device you wish to attack. Enter the IP of the VM you designated as “client.”
    * You will then be prompted to provide an attack mode.
-       * `dos`
-         This attack mode is denial of service, which will prevent the client from being able to connect to any outside servers.
-       * `ssl-strip`
-         This attack mode is SSL stripping, which will downgrade the client's connection from HTTPS to HTTP.
+       * **dos**: This attack mode is denial of service, which will prevent the client from being able to connect to any outside servers.
+       * **ssl-strip**: This attack mode is SSL stripping, which will downgrade the client's connection from HTTPS to HTTP.
 * On the client machine:  navigate to a website (e.g. github.com) in the browser. Log in, click through pages, etc.
 * On the attacking machine:  observe the behavior of the client via the Keylogger.
 
