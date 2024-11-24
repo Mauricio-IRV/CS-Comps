@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unveiling the Intricacies of an AITM Attack</title>
+    <style>
+        /* Constants/Final Vars */
+        :root {
+            --primary-color: #475468;
+            --secondary-color: #9BC2C7;
+            --secondary-text: #ffff;
+            --secondary-background: #f5f5f5;
+            --spacer: 25px;
+            --thickness: 2.5px;
+        }
+
+        /* Full Site CSS */
+        * {
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Defaults */
+        a {
+            color: var(--secondary-color);
+        }
+        img {
+            width: 100%;
+            max-width: 700px;
+            margin: 10px auto;
+        }
+        hr {
+            width: 99%;
+        }
+        :is(h1, h2, h3, h4, h5, h6) {
+            margin-bottom: 10px;
+        }
+        :is(h1, h2, h3, h4, h5, h6) {
+            margin-top: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Navigation Bar CSS */
+        .site-identity {
+            display: flex;
+            height: 70px;
+            width: auto;
+            max-width: 350px;
+        }
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-color);
+        }
+        .site-identity a {
+            display: flex;
+            color: var(--secondary-text);
+            align-items: center;
+            text-decoration: none;
+        }
+        .site-identity > a > h2 {
+            color: unset;
+            margin: auto;
+            padding-left: 10px;
+        }
+        nav {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: start;
+            padding: 16px 32px;
+            position: relative;
+            background: var(--primary-color);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            list-style: none;
+        }
+        .nav-links li {
+            margin: 0px 20px;
+        }
+        .hamburger {
+            display: none;
+        }
+        
+        /* Navbar Links Color */
+        nav a {
+            color: var(--secondary-text);
+        }
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+        .nav-links > li > a {
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: start;
+            flex-direction: column;
+            background: var(--primary-color);
+            padding-left: 0px;
+            row-gap: 20px;
+            overflow: hidden;
+            width: 100%;
+            height: 0px;
+            transition: height 0.3s;
+        }
+        .nav-links--show {
+            /* height will be added with javascript */
+        }
+        .nav-links li a {
+            text-decoration: none;
+        }
+        .hamburger {
+            position: absolute;
+            display: block;
+            top: 35px;
+            right: 35px;
+        }
+        .bar {
+            background: var(--secondary-text);
+            height: 3.5px;
+            width: 30px;
+            margin: 5px auto;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger--transform .bar:nth-child(1) {
+            width: calc(100% / 2);
+            margin-left: 0;
+        }
+        .hamburger--transform .bar:nth-child(3) {
+            width: calc(100% / 2);
+            margin-right: 0;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            margin: 25px;
+            font-size: 18px;
+            width: calc(100% - 50px);
+        }
+        .content hr {
+            border: none;
+            border-radius: 50px;
+            height: 5px;
+            margin-bottom: 5px;
+            width: 200px;
+            background: var(--primary-color);
+        }
+        p, em, i, pre {
+            padding: 6px 10px;
+        }
+        em {
+            font-weight: bold;
+        }
+        .bullets {
+            padding-top: 2.5px;
+            padding-left: 10px;
+        }
+        .content ul {
+            padding: 5px 40px;
+        }
+        pre {
+            margin: 10px;
+            margin-right: 2.5%;
+            background: var(--primary-color);
+            color: var(--secondary-text);
+        }
+
+        @media only screen and (min-width: 800px) {
+            body {
+                display: flex;
+            }
+            .site-identity {
+                height: auto;
+            }
+            .sidebar-padding {
+                min-width: 244px;
+                width: 244px;
+                max-width: 244px;
+                background: var(--primary-color);
+            }
+            nav {
+                height: 100vh;
+                width: 180px;
+                position: fixed;
+            }
+            .nav-links {
+                margin-top: 20px;
+            }
+            .hamburger {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Spacer for navigation when it's a sidebar-->
+    <div class="sidebar-padding"></div>
+    <nav>
+        <div>
+            <!-- Navigation Bar Identity Section -->
+            <div class="site-identity">
+                <a href="#">
+                    <h2>Unveiling the Intricacies of an AITM Attack</h2>
+                </a>
+            </div>
+        
+            <!-- Navigation Bar Redirects -->
+            <ul class="nav-links">
+                <hr>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#docu">Docu</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <hr>
+                <li><a href="#group">Group</a></li>
+                <li><a href="#" target="_blank" rel="noopener">Github</a></li>
+                <hr>
+            </ul>
+        
+            <!-- Navigation Bar Hamburger -->
+            <div class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </nav>
+    <!-- Start: Main Content Body -->
+    <div class="content">
+        <h2 id="blog"># Blog</h2>
+        <hr>
+        <p>When on a local area network, such as a public coffee shop WiFi network, each user is vulnerable to an attack called an adversary-in-the-middle attack (AITM). Attackers on such a public network have potential avenues to intercept communication and steal highly valuable data, such as network traffic or login information. These attacks are dangerous because the initial steps are hard to track, but modern browsers and servers have mitigation strategies in place to protect users. This project outlines the implementation of such an attack, and the strategies that one needs to use to protect themselves against it. </p>
+        <div class="bullets">
+            This project consists of:
+            <ul>
+                <li>Arp Cache Poisoning</li>
+                <li>SSL Stripping</li>
+                <li>Packet Modification</li>
+            </ul>
+        </div>
+        <h3> AITM (Adversary-in-the-Middle) Attacks</h3>
+        <hr style="width: 100px;">
+        <p>The purpose of an AITM attack is for the attacker to act as an undetected conduit through which the communication between two other entities flows. In this case, our three actors are the client, the server, and the attacker (which is a proxy server). </p>
+        <img src="assets/aitm-attack.png"/>
+        <p>There are two types of AITM attacks:  passive and active. Passive is simple eavesdropping; this loses any effect once encryption is established (as the attacker has neither the client nor server key). Active entails modifying the packets–this is where our project takes place. </p>
+        <p>[An important note about AITM attacks is that they don’t necessarily come about through user error. It isn’t like a suspect link was clicked or the client fell for a scam. Instead, the attacker takes advantage of vulnerabilities in the network to situate itself in communication lines.]</p>
+        <p>There are many built-in protective measures against AITM attacks because they are very dangerous, as sensitive data like credentials can be stolen or online activity observed. These safeguards occur on both the client-side (in the browser, like Chrome) and server-side.  </p>
+        <div class="bullets">
+            Now, with an introduction to AITM attacks established, that leads us to two main questions:
+            <ul>
+                <li>How does the attacker get situated in the middle of the communications?</li>
+                <li>What can the attacker do once it is there?</li>
+            </ul>
+        </div>
+        <h3>ARP (Address Resolution Protocol) Cache Poisoning</h3>
+        <hr style="width: 100px;">
+        <p>To establish itself in the middle of packet flow, the attacker can take advantage of a technique known as ARP cache poisoning. On a local network, each device has an ARP table. This can be thought of as a directory linking IP addresses to MAC addresses. So when Device A wants to communicate with Device B, A will look up B’s IP address in A’s ARP cache to find B’s MAC address. If there is no entry for B’s IP, then A will broadcast a request to the local network, asking “what MAC address goes with this IP?” </p>
+        <img src="assets/arp-poisoning.png"/>
+        <p>There are no built-in security features to the ARP system. The way that it works relies on being able to broadcast information or ask for where a device lives, without authentication. Thus, it is vulnerable to spoofing.</p>
+        <p>There are three main characters here:  the client, the attacker, and the router (gateway from the local network to the internet). The attacker floods the client’s ARP table with messages linking the router’s IP address with the attacker’s MAC address. We send one request every 2 seconds to maintain our AITM status. Simultaneously, the attacker floods the router’s ARP table with messages linking the client’s IP address to the attacker’s MAC address. Now, both the client and the router send all traffic meant for the other to the attacker.</p>
+        <div class="bullets">
+            Now, with an introduction to AITM attacks established, that leads us to two main questions:
+            <ul>
+                <li>Obtain the MAC address of client via IP address</li>
+                <li>Obtain the MAC address of router via IP address</li>
+                <li>Create spoofed messages on Level 3</li>
+                <li>Wrap these messages in Ethernet routing frames that contain the destination MAC address</li>
+                <li>Send these packets in a continual loop until the user terminates the session</li>
+            </ul>
+        </div>
+        <em>Threading</em>
+        <p>We make use of threading to simultaneously run ARP cache poisoning and our AITM attack. This enables us to have more control over the attack mode selected, as we either host our attacking server or perform denial of service. </p>
+        <h3>Denial of Service (DOS)</h3>
+        <hr style="width: 100px;">
+        <p>A powerful but straightforward type of AITM attack is DOS. Because the attacker controls the flow of packets, it can prevent any packets from ever reaching the intended server by dropping them as they come in. We also found this mode of attack to be a helpful diagnostic tool to ensure that all packets are indeed routed through the attacker.</p>
+        <h3>SSL Stripping</h3>
+        <hr style="width: 100px;">
+        <p>We also implemented a more dangerous mode of AITM attack:  SSL stripping. This attack downgrades the target’s connection to a server from HTTPS to HTTP, thus exposing private information as plaintext. </p>
+        <em>Overview</em>
+        <p>Primarily, on the modern internet, security measures are enforced to protect users from themselves. Pretty much all servers reject HTTP connections flat out, and most browsers (like Chrome and Firefox) automatically upgrade requests to HTTPS. </p>
+        <img src="assets/ssl-stripping.png"/>
+        <p>So, then how can this attack come to be? It relies on the fact that the TLS handshake must take place for encryption to work. Thus, necessarily, the first request sent by the client to the server is simple HTTP. We also take advantage of how most users do not specify “https://” at the beginning of links when typing into the search bar. A user is much more likely to type “github.com” than “https://github.com” when trying to go to that site. This means that this first request is HTTP, going to port 80. Our attacking server is listening at port 80. So now, the packets are routed to our attacker machine (via ARP cache poisoning) and then processed by our attacker server once they have arrived (as they are intended for port 80). Now, our attacker server can connect securely to the website. To the website, the attacker server is just another client. We pass along the contents of all of the requests the client makes. But in the responses, we downgrade the connection to HTTP between the client and our attacker server. </p>
+        <p>Now, given this overview, let’s talk about the minutiae of how we execute this attack.</p>
+        <em>Setup: Proxy server & firewalls</em>
+        <p>For our attacker, we set up a proxy server on the attacking machine. We enable IP forwarding to be able to handle references to HTTPS because our server is just listening on port 80, which is http. This also allows for the page to load more quickly, as IP forwarding means that those packets do not have to travel through our attacking server, thus eliminating unnecessary steps. </p>
+        <p>We also make use of iptables to direct all packets intended for port 80 (regardless of IP) to our attacking server. This is an important step because otherwise the packets make it to our attacking machine (via the ARP cache poisoning) but do not get received by the server. So, as iptables allows us to include a rule that sends all http packets that make it to our machine to our server. </p>
+        <em>Headers</em>
+        <p>The headers on http requests contain important information about how the server should respond. The primary security-related header we deal with is the “Strict-Transport-Security” header. This header (added by the browser) forces the server to upgrade the connection from http to https. It is responsible for why you can type “www.example.com” and go to “https://www.example.com” immediately. It is essential that we strip this header from the client’s GET requests because we need to keep its connection at http. We also strip “Content-Security-Policy,” “Transfer-Encoding,” and “Content-Encoding” to further limit the ability of the client to attempt to upgrade its security.</p>
+        <em>Cookies</em>
+        <p>Cookies are an important way for browsers to store information that the server wants them to maintain. Of particular interest to us are session cookies (from the destination server) and CORS protocol cookies (from our server). Session cookies are necessary for enabling log in. Our server handles secure session cookies sent from the destination server via Python requests. The client does not get to have these cookies since there is no need for it. CORS cookies are essential for our server to enable in the http connection with the client because that allows for our Keylogger to work. Otherwise, we cannot send back that information.</p>
+        <em>GET Requests</em>
+        <p>To handle GET requests, the attacker acts as a proxy server to the target. The target connects to the attacking server and sends a GET request to the server. The attacking server forwards that request to the domain server and receives a response. The attacking server then modifies the resulting webpage as needed to inject malicious code, and returns the webpage to the target.</p>
+        <em>POST Requests</em>
+        <p>For login information, once the target has sent a GET request, the attacking server returns a modified webpage with an injected script. During the time where the client is on the login page, the script sends POST requests to the attacking server with the data of both login fields included. This allows the attacker to passively receive the target’s login information without any manually sent requests.</p>
+        <em>Error codes</em>
+        <p>Our server needs to be equipped to handle errors that are returned back. The “redirect” errors (more commonly 301, sometimes 308) are circumvented by our use of the Python requests library and that we only connect securely (via https) to the destination server. A 301 redirect indicates that the domain requested is most likely updated to an https URL. We handle other errors directly within their scope and use try-except blocks to limit the effects of an error if it happens. Currently the sites we have tested this tool on do not throw errors, but we have the mechanisms in place to gracefully exit.</p>
+        <em>Keylogger</em>
+        <p>We also implemented a JS script that logs everything that the client types. We do this by appending the script to the packet content (html) that we send from our attacking server to the client. In this way, we can easily record the credentials the client logs, as well as observe their activity on the website. </p>
+        <h3>Final Thoughts</h3>
+        <p>Being on the side of the “attacker” has been a very interesting concept to explore in this comps project. Learning how to break security really gives a deeper understanding into how it works. It is a never ending arms race between the people who develop security and those who try to defeat it, and it will be fascinating to follow updates in the security world now, armed as we are with this new knowledge.</p>
+        <em>Thanks for reading!</em>
+
+        <h2 id="docu"># Documentation</h2>
+        <hr>
+        <h3>Overview</h3>
+        <div class="bullets">
+            ARP_SSL_Toolkit is a tool that allows you to set up an adversary-in-the-middle (AITM) attack against another device, implementing:
+            <ul>
+                <li>ARP Poisoning</li>
+                <li>Denial of Service</li>
+                <li>SSL Stripping</li>
+            </ul>
+        </div>
+        <h3>Installation</h3>
+        <div class="bullets">
+            To install the project, clone the git repo into a folder and cd into CS-Comps/mainpackage/. Then run the following commands (again, only on Kali):
+            <ul>
+                <li>pip3 install scapy</li>
+                <li>pip3 install requests</li>
+            </ul>
+        </div>
+        <h3>Setting things up</h3>
+        <p>In order to perform an AITM attack you will first want to make sure that you have two kali virtual machines installed on your computer</p>
+        <p>From here you will want to start up both virtual machines, designating one as the attacker and one as the target</p>
+        <em>On the Attacking Machine</em>
+        <p>To start the adversary-in-the-middle attack, run the following command in your attacking machines terminal</p>
+        <pre><i>sudo python3 main.py</i></pre>
+        <div class="bullets">
+            You will then be prompted to input an attack mode to run in conjunction with ARP Poisoning, to which you can choose one of the following:
+            <ul>
+                <li>Mode: dos</li>
+                <li>Mode: ssl-strip</li>
+            </ul>
+        </div>
+        <em>On the Target Machine</em>
+        <p>Open up a browser, and try to visit a site to see what happens</p>
+        <p><span style="font-style: italic;">Note:</span> As of right now, our implementation is very limited and only works on select sites for SSL-Stripping. As such, for a working test we recommend visiting github.com</p>
+        <em>That's it!</em>
+        <h2 id="demo"># Demo</h2>
+        <hr>
+        <h2 id="group"># Group</h2>
+        <hr>
+    </div>
+</body>
+<script>
+    const navLinks = document.querySelector(".nav-links");
+    const hamburger = document.querySelector(".hamburger");
+
+    // On Startup
+    const screenSize = window.innerWidth;
+    if (screenSize > 800) {
+        navLinks.style.height = `82.1vh`;
+    }
+    else {
+        navLinks.style.height = `0px`;
+    }
+
+    hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("hamburger--transform");
+
+        /* Hidden Height */
+        const navLinksHeight = navLinks.scrollHeight;
+
+        /* If navLinks isn't shown, then show it, otherwise hide it */
+        if (!navLinks.classList.contains("nav-links--show")) {
+            navLinks.classList.add("nav-links--show");
+            navLinks.style.height = `${navLinksHeight}px`;
+        } else {
+            navLinks.classList.remove("nav-links--show");
+            navLinks.style.height = `0px`;
+        }
+    });
+
+    // If screensize is +- 700px set appropriate styling
+    window.addEventListener("resize", () => {
+        const screenSize = window.innerWidth;
+        if (screenSize > 800) {
+            navLinks.classList.add("nav-links--show");
+            navLinks.style.height = `82.1vh`;
+        }
+        else {
+            navLinks.classList.remove("nav-links--show");
+            navLinks.style.height = `0px`;
+        }
+    });
+
+</script>
+</html>
