@@ -247,7 +247,7 @@
         <hr style="width: 100px;">
         <p>The purpose of an AITM attack is for the attacker to act as an undetected conduit through which the communication between two other entities flows. In this case, our three actors are the client, the server, and the attacker (which is a proxy server). </p>
         <img src="assets/aitm-attack.png"/>
-        <p>There are two types of AITM attacks:  passive and active. Passive is simple eavesdropping; this loses any effect once encryption is established (as the attacker has neither the client nor server key). Active entails modifying the packets–this is where our project takes place. </p>
+        <p>There are two types of AITM attacks:  <i>passive</i> and <i>active</i>. <i>Passive</i> is simple eavesdropping; this loses any effect once encryption is established (as the attacker has neither the client nor server key). <i>Active</i> entails modifying the packets–this is where our project takes place. </p>
         <p>[An important note about AITM attacks is that they don’t necessarily come about through user error. It isn’t like a suspect link was clicked or the client fell for a scam. Instead, the attacker takes advantage of vulnerabilities in the network to situate itself in communication lines.]</p>
         <p>There are many built-in protective measures against AITM attacks because they are very dangerous, as sensitive data like credentials can be stolen or online activity observed. These safeguards occur on both the client-side (in the browser, like Chrome) and server-side.  </p>
         <div class="bullets">
@@ -264,7 +264,7 @@
         <p>There are no built-in security features to the ARP system. The way that it works relies on being able to broadcast information or ask for where a device lives, without authentication. Thus, it is vulnerable to spoofing.</p>
         <p>There are three main characters here:  the client, the attacker, and the router (gateway from the local network to the internet). The attacker floods the client’s ARP table with messages linking the router’s IP address with the attacker’s MAC address. We send one request every 2 seconds to maintain our AITM status. Simultaneously, the attacker floods the router’s ARP table with messages linking the client’s IP address to the attacker’s MAC address. Now, both the client and the router send all traffic meant for the other to the attacker.</p>
         <div class="bullets">
-            Now, with an introduction to AITM attacks established, that leads us to two main questions:
+            To implement this, we used the Python Scapy library, which helps handle packet creation and manipulation. We are working mainly on OSI Level 2 (Ethernet) and Level 3 (TCP/IP) in ARP cache poisoning.
             <ul>
                 <li>Obtain the MAC address of client via IP address</li>
                 <li>Obtain the MAC address of router via IP address</li>
