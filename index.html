@@ -325,11 +325,12 @@
             </ul>
         </div>
         <h3>Setting things up</h3>
-        <p>In order to perform an AITM attack you will first want to make sure that you have two kali virtual machines installed on your computer</p>
-        <p>From here you will want to start up both virtual machines, designating one as the attacker and one as the target</p>
+        <p>In order to perform an AITM attack in a safe testing environment, you will first want to make sure that you have two kali virtual machines installed on your computer. </p>
+        <p>From here you will want to start up both virtual machines, designating one as the attacker (where you have the prject installed) and one as the target.</p>
         <em>On the Attacking Machine</em>
-        <p>To start the adversary-in-the-middle attack, run the following command in your attacking machines terminal</p>
+        <p>To start the AITM attack, run the following command in your attacking machine's terminal:</p>
         <pre><i>sudo python3 main.py</i></pre>
+        <p>You will be prompted to specify the IP of the device you wish to attack. Enter the IP of the VM you designated as the target.</p>
         <div class="bullets">
             You will then be prompted to input an attack mode to run in conjunction with ARP Poisoning, to which you can choose one of the following:
             <ul>
@@ -338,9 +339,9 @@
             </ul>
         </div>
         <em>On the Target Machine</em>
-        <p>Make sure that you have not visited the site with an HTTPS connection before (clearing history & cookies) would address this</p>
-        <p>Open up a browser, and try to visit a site (e.g. github.com) to see what happens</p>
-        <p><span style="font-style: italic;">Note:</span> As of right now, our implementation is very limited and only works on select sites for SSL-Stripping. As such, for a working test we recommend visiting github.com</p>
+        <p>Make sure that you have not visited the site with an HTTPS connection before. Clearing history and cookies would address this.</p>
+        <p>Open up a browser, and try to visit a site (e.g. github.com) to see what happens.</p>
+        <p><span style="font-style: italic;">Note:</span> As of right now, our implementation is very limited and only works on select sites for SSL-Stripping. As such, for a working test, we recommend visiting github.com.</p>
         <em>That's it!</em>
         <h2 id="demo"># Demo</h2>
         <hr>
