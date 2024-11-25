@@ -8,18 +8,18 @@ ARP_SSL_Toolkit is a package that allows you to set up an adversary-in-the-middl
 * ARP spoofing
 * Denial of service
 * SSL stripping
-* HTTP downgrading
+* HTTPS downgrading
 
 ### Installation/setup
 * To replicate our testing environment, set up two virtual machines and designate one to be the attacker machine and the other to be the client.
    * You will act as both parties.
-   * You could run this on a public network as well, but given the ethical and moral issues of that, please don’t.
+   * You could run this on a public network as well, but given the ethical, moral, and legal issues of that, please don’t.
 * On the attacking machine:  to install the project, clone the git repo into a folder and cd into CS-Comps/prototype/. Then run the following commands:
    * `pip3 install scapy`
    * `pip3 install requests`
 
 ### Running instructions
-* To start the adversary-in-the-middle attack, run sudo python3 main.py on the attacker machine.
+* To start the adversary-in-the-middle attack, run `sudo python3 main.py` on the attacker machine.
    * You will be prompted to specify the IP of the device you wish to attack. Enter the IP of the VM you designated as “client.”
    * You will then be prompted to provide an attack mode.
        * **dos**: This attack mode is denial of service, which will prevent the client from being able to connect to any outside servers.
