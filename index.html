@@ -185,7 +185,16 @@
         .gallery span {
             padding: 20px 10px;
         }
-        @media only screen and (min-width: 1800px) {
+        @media only screen and (max-width: 1260px) {
+            .gallery {
+                flex-direction: column;
+            }
+            .gallery span {
+                max-width: 200px;
+                margin: auto;
+            }
+        }
+        @media only screen and (min-width: 800px) {
             body {
                 display: flex;
             }
@@ -208,15 +217,6 @@
             }
             .hamburger {
                 display: none;
-            }
-        }
-        @media only screen and (max-width: 900px) {
-            .gallery {
-                flex-direction: column;
-            }
-            .gallery span {
-                max-width: 200px;
-                margin: auto;
             }
         }
     </style>
@@ -386,12 +386,12 @@ gateway_arp = scapy.ARP(op = 2, psrc=target_ip, hwsrc=target_mac , pdst=gateway_
         <em>That's it!</em>
         <h2 id="demo"># Demo</h2>
         <hr>
-        <a style="padding: 10px 5px;" href="https://drive.google.com/file/d/11_Fem7kZ93OgU28s41_Lx5AOFViWeCqJ/view?usp=sharing">Click here to watch our demo video!</a>
+        <a href="https://drive.google.com/file/d/11_Fem7kZ93OgU28s41_Lx5AOFViWeCqJ/view?usp=sharing" style="padding: 10px 5px;">Click here to watch our demo video!</a>
         <h2 id="group"># Group</h2>
         <hr>
         <div class="gallery">
             <img src="assets/ezra_photo.jpeg" />
-            <span>Ezra is a Computer Science major from Boston, Massachusetts. He likes to play piano and saxophone, and will take any opportunity to start a jam session.</span>
+            <span>Ezra is a Computer Science major from Boston, Massachusetts. He likes to play piano and saxophone, and will take any opportunity to start a jam session. </span>
             <img src="assets/thea_photo.jpg" />
             <span>Thea Traw is a Computer Science and Biology double major from Portland, Oregon. She likes games and friends, and playing games with friends. </span>
             <img src="assets/mauricio_photo.jpeg" />
