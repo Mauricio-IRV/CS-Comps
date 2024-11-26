@@ -172,7 +172,11 @@
             background: var(--primary-color);
             color: var(--secondary-text);
         }
-
+        .gallery div img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
         @media only screen and (min-width: 800px) {
             body {
                 display: flex;
@@ -220,7 +224,7 @@
                 <li><a href="#demo">Demo</a></li>
                 <hr>
                 <li><a href="#group">Group</a></li>
-                <li><a href="#" target="_blank" rel="noopener">Github</a></li>
+                <li><a href="https://github.com/mauricio-irv/cs-comps/" target="_blank" rel="noopener">Github</a></li>
                 <hr>
             </ul>
         
@@ -329,6 +333,14 @@ gateway_arp = scapy.ARP(op = 2, psrc=target_ip, hwsrc=target_mac , pdst=gateway_
             </ul>
         </div>
         <h3>Installation</h3>
+        <div class="bullets"> 
+            You may need to install scapy & requests if you don't have them installed already. To check if you have them installed run the following commands:
+            <ul>
+                <li>pip3 show scapy</li>
+                <li>pip3 show requests</li>
+            </ul>
+
+        </div>
         <div class="bullets">
             To install the project, clone the git repo into a folder and cd into CS-Comps/mainpackage/. Then run the following commands (again, only on Kali):
             <ul>
@@ -359,12 +371,14 @@ gateway_arp = scapy.ARP(op = 2, psrc=target_ip, hwsrc=target_mac , pdst=gateway_
         <hr>
         <a style="padding: 10px 5px;" href="https://drive.google.com/file/d/11_Fem7kZ93OgU28s41_Lx5AOFViWeCqJ/view?usp=sharing">Click here to watch our demo video!</a>
         <h2 id="group"># Group</h2>
-        <div class="gallery">
-            <img src="" />
-            <img src="" />
-            <img src="" />
-        </div>
         <hr>
+        <div class="gallery">
+            <div>
+                <img src="assets/ezra_photo.jpeg" />
+                <img src="assets/thea_photo.jpg" />
+                <img src="assets/mauricio_photo.jpeg" />
+            </div>
+        </div>
         <h2 id="references"># References</h2>
         <hr>
 	    <p>Please follow this <a href="https://github.com/Mauricio-IRV/CS-Comps/blob/main/notes/resources.md">link</a> to our references.</p>
