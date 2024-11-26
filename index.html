@@ -172,12 +172,20 @@
             background: var(--primary-color);
             color: var(--secondary-text);
         }
-        .gallery div img {
-            width: 250px;
-            height: 250px;
+        .gallery {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+        }
+        .gallery img {
+            width: 200px;
+            height: 200px;
             object-fit: cover;
         }
-        @media only screen and (min-width: 800px) {
+        .gallery span {
+            padding: 20px 10px;
+        }
+        @media only screen and (min-width: 1800px) {
             body {
                 display: flex;
             }
@@ -200,6 +208,15 @@
             }
             .hamburger {
                 display: none;
+            }
+        }
+        @media only screen and (max-width: 900px) {
+            .gallery {
+                flex-direction: column;
+            }
+            .gallery span {
+                max-width: 200px;
+                margin: auto;
             }
         }
     </style>
@@ -373,11 +390,12 @@ gateway_arp = scapy.ARP(op = 2, psrc=target_ip, hwsrc=target_mac , pdst=gateway_
         <h2 id="group"># Group</h2>
         <hr>
         <div class="gallery">
-            <div>
-                <img src="assets/ezra_photo.jpeg" />
-                <img src="assets/thea_photo.jpg" />
-                <img src="assets/mauricio_photo.jpeg" />
-            </div>
+            <img src="assets/ezra_photo.jpeg" />
+            <span>Ezra is a Computer Science major from Boston, Massachusetts. He likes to play piano and saxophone, and will take any opportunity to start a jam session.</span>
+            <img src="assets/thea_photo.jpg" />
+            <span>Thea Traw is a Computer Science and Biology double major from Portland, Oregon. She likes games and friends, and playing games with friends. </span>
+            <img src="assets/mauricio_photo.jpeg" />
+            <span>Mauricio Reyes is a Computer Science major from Boston, Massachusetts who likes cooking, eating, coding, and much much more. </span>
         </div>
         <h2 id="references"># References</h2>
         <hr>
