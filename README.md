@@ -1,7 +1,7 @@
 # CS-Comps
 
 ### Background
-This project was developed for CS comps at Carleton College, Fall 2024. More specifically, we are part of the “Building Hacking Tools from Scratch” team. Our primary inspiration for this tool was bettercap.
+This project was developed for CS comps at Carleton College, Fall 2024. More specifically, we are part of the “[Building Hacking Tools from Scratch](https://docs.google.com/document/d/e/2PACX-1vSouRo8KV3OQYULsrzRG4ekcRslUbjvLqcGHJjQ8peiBg_xVDK24utqCMxEoJRkYdpKWsjdgJuT5ZX9/pub)" team. Our primary inspiration for this tool was bettercap.
 
 ### The tool
 ARP_SSL_Toolkit is a package that allows you to set up an adversary-in-the-middle (AITM) attack against another device, implementing:
