@@ -8,6 +8,20 @@ Huge thanks to Jeff Ondich for his assistance on guiding us and helping us clari
 
 ---
 
+[HSTS Measurement and an Enhanced Stripping Attack Against HTTPS](https://nesa.zju.edu.cn/download/HSTS%20Measurement%20and%20an%20Enhanced%20Stripping%20Attack%20Against%20HTTPS.pdf)
+
+[Defeating SSL Using SSL Strip -- Marlinspike Blackhat](https://www.youtube.com/watch?v=MFol6IMbZ7Y&t=1529s)
+
+[Downgrade Attack](https://en.wikipedia.org/wiki/Downgrade_attack)
+
+[TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security#SSL_1.0,_2.0,_and_3.0)
+
+[TLS Explained](https://www.youtube.com/watch?v=AlE5X1NlHgg&t=946s)
+
+[HSTS Explained](https://www.youtube.com/watch?v=kYhMnw4aJTw)
+
+[SSL Stripping](https://www.youtube.com/watch?v=H1QM6G4Zmos)
+
 #### Spoofing
 [Various Types of Spoofing](https://www.rapid7.com/fundamentals/man-in-the-middle-attacks/)
 
@@ -59,3 +73,4 @@ Huge thanks to Jeff Ondich for his assistance on guiding us and helping us clari
 
 #### Server Setup
 [Python HTTP Server](https://realpython.com/python-http-server/)
+

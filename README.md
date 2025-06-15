@@ -29,3 +29,9 @@ ARP_SSL_Toolkit is a package that allows you to set up an adversary-in-the-middl
 * On the attacking machine:  observe the behavior of the client via the Keylogger.
 
 > Note: The pyproject.toml is only for the python package build, and is completely irrelevant for anything other than intermittently packaging binaries for the resulting program.
+
+### Redirects
+
+For an overview of our project refer to [Unveiling the Intricacies of an AITM Attack](https://www.cs.carleton.edu/cs_comps/2425/security/mreyes-tthea-bezra/)
+
+For acknowledgements and a brief overview of some of the references used refer to [Resources](https://github.com/Mauricio-IRV/CS-Comps/blob/main/notes/resources.md)
